@@ -55,11 +55,11 @@
     <Compile Include="PropertyObjectExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TabularReporting.Abstractions\TabularReporting.Abstractions.csproj">
+    <ProjectReference Include="..\..\src\TabularReporting.Abstractions\TabularReporting.Abstractions.csproj">
       <Project>{12d50155-1f55-4bff-aea3-0d4c470b06c9}</Project>
       <Name>TabularReporting.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TabularReporting\TabularReporting.csproj">
+    <ProjectReference Include="..\..\src\TabularReporting\TabularReporting.csproj">
       <Project>{02e622b3-284e-44cb-885f-e74581ddeaa6}</Project>
       <Name>TabularReporting</Name>
     </ProjectReference>
