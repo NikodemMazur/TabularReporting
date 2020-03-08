@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting", "src\Tab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.Abstractions", "src\TabularReporting.Abstractions\TabularReporting.Abstractions.csproj", "{12D50155-1F55-4BFF-AEA3-0D4C470B06C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.TestStand", "src\TabularReporting.TestStand\TabularReporting.TestStand.csproj", "{48AF9E57-2A6F-47E0-AA52-FB80D6C313F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.TestStand", "samples\TabularReporting.TestStand\TabularReporting.TestStand.csproj", "{48AF9E57-2A6F-47E0-AA52-FB80D6C313F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.Tests", "tests\TabularReporting.Tests\TabularReporting.Tests.csproj", "{2C40088B-AEFD-42AE-803F-75FDA4C8F462}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.TestStand.Tests", "tests\TabularReporting.TestStand.Tests\TabularReporting.TestStand.Tests.csproj", "{97F1A8C7-9849-4BB0-A0BF-2E6C2DF57386}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.TestStand.Tests", "samples\TabularReporting.TestStand.Tests\TabularReporting.TestStand.Tests.csproj", "{97F1A8C7-9849-4BB0-A0BF-2E6C2DF57386}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
