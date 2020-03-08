@@ -1,7 +1,7 @@
 ﻿namespace TabularReporting.Abstractions
 {
-    public interface IReporter
+    public interface IReporter<T>
     {
-        IColumn Report();
+        IColumn Report(T source, IColumnQuery reportQuery);
     }
 }

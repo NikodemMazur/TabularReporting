@@ -133,7 +133,7 @@ namespace TabularReporting.Tests
             FakeType source = new FakeType(7);
             var mockColQuery = MockSrcColQueryRetNum();
 
-            var actual = new Projector<FakeType>().ProjectToColumn(source, mockColQuery.Object).Content.Extract(rq => null, obj => obj.ToString());
+            var actual = new Reporter<FakeType>().Report(source, mockColQuery.Object).Content.Extract(rq => null, obj => obj.ToString());
 
             Assert.Equal(expected, actual);
         }
@@ -196,7 +196,7 @@ namespace TabularReporting.Tests
             var colQueryReport = new ColumnQueryWithRows(new[] { new OneTimeRowQuery(new[] { colQueryHeader }),
                                                                  new OneTimeRowQuery(new[] { colQueryBody }) });
 
-            XNode colXmlNode = new Projector<FakeType>().ProjectToColumn(_type, colQueryReport).ToXml();
+            XNode colXmlNode = new Reporter<FakeType>().Report(_type, colQueryReport).ToXml();
             string actualXmlStr = colXmlNode.ToString();
 
             Assert.Equal(ExpectedTestResults.ExpectedReportAsXml, actualXmlStr);
