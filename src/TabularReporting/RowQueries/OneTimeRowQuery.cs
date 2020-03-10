@@ -1,6 +1,7 @@
 ﻿using TabularReporting.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TabularReporting
 {
@@ -16,6 +17,7 @@ namespace TabularReporting
             _consumed = false;
         }
         public OneTimeRowQuery() : this(Array.Empty<IColumnQuery>()) { }
+        public OneTimeRowQuery(params IColumnQuery[] colQueries) : this(colQueries.AsEnumerable()) { }
 
         IEnumerable<IColumnQuery> IRowQuery.ColumnQueries
         {

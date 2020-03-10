@@ -13,6 +13,7 @@ namespace TabularReporting
             _rowQueries = rowQueries;
         }
         public ColumnQueryWithRows() : this(Enumerable.Empty<IRowQuery>()) { }
+        public ColumnQueryWithRows(params IRowQuery[] rowQueries) : this(rowQueries.AsEnumerable()) { }
 
         Union2<IEnumerable<IRowQuery>, object> IColumnQuery.Content =>
             new Union2<IEnumerable<IRowQuery>, object>.Case1(_rowQueries);
