@@ -13,9 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.Tests", "t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.TestStand.Tests", "samples\TabularReporting.TestStand.Tests\TabularReporting.TestStand.Tests.csproj", "{97F1A8C7-9849-4BB0-A0BF-2E6C2DF57386}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.Sample", "TabularReporting.Sample\TabularReporting.Sample.csproj", "{F6594A7C-45DB-4B36-9E47-6FE1BB29B529}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.Sample", "samples\TabularReporting.Sample\TabularReporting.Sample.csproj", "{F6594A7C-45DB-4B36-9E47-6FE1BB29B529}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.Sample.Tests", "TabularReporting.Sample.Tests\TabularReporting.Sample.Tests.csproj", "{2C8CC3A5-B0DF-45F3-8FD9-F03656B15ED8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.Sample.Tests", "samples\TabularReporting.Sample.Tests\TabularReporting.Sample.Tests.csproj", "{2C8CC3A5-B0DF-45F3-8FD9-F03656B15ED8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
