@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TabularReporting.Abstractions;
 
 namespace TabularReporting.Sample
@@ -13,6 +14,8 @@ namespace TabularReporting.Sample
             _assertType = assertType ?? throw new System.ArgumentNullException(nameof(assertType));
             _colQueries = colQueries ?? throw new System.ArgumentNullException(nameof(colQueries));
         }
+        public ByAssertTypeFilter(string assertType, params IColumnQuery[] colQueries)
+            : this(assertType, colQueries.AsEnumerable()) { }
 
         public EnumerableTestResult Source { get; set; }
 
