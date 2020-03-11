@@ -9,7 +9,7 @@ namespace TabularReporting
 
     public class Reporter<T> : IReporter<T> where T : IEnumerable<T>
     {
-        public IColumn Report(T source, IColumnQuery reportQuery) => ProjectToColumn(source, reportQuery);
+        public virtual IColumn Report(T source, IColumnQuery reportQuery) => ProjectToColumn(source, reportQuery);
 
         // ProjectToColumn along with ProjectToRows and PopulateColumn creates recursive chain.
         IColumn ProjectToColumn(T source, IColumnQuery colQuery) => new Column(PopulateColumn(source, colQuery));
