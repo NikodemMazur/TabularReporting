@@ -106,7 +106,7 @@
       <Project>{12D50155-1F55-4BFF-AEA3-0D4C470B06C9}</Project>
       <Name>TabularReporting.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\TabularReporting.TestStand\TabularReporting.TestStand.csproj">
+    <ProjectReference Include="..\..\samples\TabularReporting.TestStand\TabularReporting.TestStand.csproj">
       <Project>{48AF9E57-2A6F-47E0-AA52-FB80D6C313F2}</Project>
       <Name>TabularReporting.TestStand</Name>
     </ProjectReference>
