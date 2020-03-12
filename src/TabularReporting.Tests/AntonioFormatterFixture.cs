@@ -104,10 +104,10 @@ namespace TabularReporting.Tests
         public void PrecalculateColumnWidthsWorksCorrectly()
         {
 
-            var sut = new AntonioFormatter();
+            var sut = new SimpleFormatter();
 
             var actual = sut.PrecalculateColumnWidths(_reportAsColumn);
-            var expected = new Dictionary<Tuple<int[], int[]>, int>(new AntonioFormatter.TupleKeyEqualityComparer())
+            var expected = new Dictionary<Tuple<int[], int[]>, int>(new SimpleFormatter.TupleKeyEqualityComparer())
             {
                 {new Tuple<int[], int[]>(Array.Empty<int>(), Array.Empty<int>()), 34},
                 {new Tuple<int[], int[]>(new[] { 0 },       new[] { 1 }), 34},
@@ -136,7 +136,7 @@ namespace TabularReporting.Tests
         [Fact]
         public void PrecalculateRowHeightsWorksCorrectly()
         {
-            var sut = new AntonioFormatter();
+            var sut = new SimpleFormatter();
 
             var actual = sut.PrecalculateRowHeights(_reportAsColumn);
 
@@ -192,7 +192,7 @@ namespace TabularReporting.Tests
         public void EndpointFormatterMethodsReturnConsistentResults(string sample, int maxLinesCount, int maxColWidth, 
             string expectedStr, int expectedLinesCount, int expectedColWidth)
         {
-            var sut = new AntonioFormatter.EndpointFormatter();
+            var sut = new SimpleFormatter.EndpointFormatter();
             
             var actualMaxLinesCount = sut.CalculateHeight(sample, maxLinesCount);
             var actualMaxColWidth = sut.CalculateWidth(sample, maxColWidth);
@@ -206,7 +206,7 @@ namespace TabularReporting.Tests
         [Fact]
         public void FormatWorksCorrectly()
         {
-            var sut = new AntonioFormatter() { MaxColLinesCount = 2 };
+            var sut = new SimpleFormatter() { MaxColLinesCount = 2 };
 
             var actual = sut.Format(_reportAsColumn);
 
