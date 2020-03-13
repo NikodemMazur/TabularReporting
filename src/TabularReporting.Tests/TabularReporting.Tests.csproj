@@ -89,6 +89,7 @@
     <Compile Include="ReporterFixture.cs" />
     <Compile Include="RowExtensionsFixture.cs" />
     <Compile Include="SimpleFormatterFixture.cs" />
+    <Compile Include="SimpleTextWriterReaderFixture.cs" />
     <Compile Include="Union2Fixture.cs" />
   </ItemGroup>
   <ItemGroup>
