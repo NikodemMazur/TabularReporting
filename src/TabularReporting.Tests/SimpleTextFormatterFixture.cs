@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace TabularReporting.Tests
 {
-    public class SimpleFormatterFixture
+    public class SimpleTextFormatterFixture
     {
         readonly IColumn _reportAsColumn;
 
-        public SimpleFormatterFixture()
+        public SimpleTextFormatterFixture()
         {
             _reportAsColumn = new Column(
                 new Row(
@@ -104,10 +104,10 @@ namespace TabularReporting.Tests
         public void PrecalculateColumnWidthsWorksCorrectly()
         {
 
-            var sut = new SimpleFormatter();
+            var sut = new SimpleTextFormatter();
 
             var actual = sut.PrecalculateColumnWidths(_reportAsColumn);
-            var expected = new Dictionary<Tuple<int[], int[]>, int>(new SimpleFormatter.TupleKeyEqualityComparer())
+            var expected = new Dictionary<Tuple<int[], int[]>, int>(new SimpleTextFormatter.TupleKeyEqualityComparer())
             {
                 {new Tuple<int[], int[]>(Array.Empty<int>(), Array.Empty<int>()), 34},
                 {new Tuple<int[], int[]>(new[] { 0 },       new[] { 1 }), 34},
@@ -136,7 +136,7 @@ namespace TabularReporting.Tests
         [Fact]
         public void PrecalculateRowHeightsWorksCorrectly()
         {
-            var sut = new SimpleFormatter();
+            var sut = new SimpleTextFormatter();
 
             var actual = sut.PrecalculateRowHeights(_reportAsColumn);
 
@@ -192,7 +192,7 @@ namespace TabularReporting.Tests
         public void EndpointFormatterMethodsReturnConsistentResults(string sample, int maxLinesCount, int maxColWidth, 
             string expectedStr, int expectedLinesCount, int expectedColWidth)
         {
-            var sut = new SimpleFormatter.EndpointFormatter();
+            var sut = new SimpleTextFormatter.EndpointFormatter();
             
             var actualMaxLinesCount = sut.CalculateHeight(sample, maxLinesCount);
             var actualMaxColWidth = sut.CalculateWidth(sample, maxColWidth);
@@ -206,7 +206,7 @@ namespace TabularReporting.Tests
         [Fact]
         public void FormatWorksCorrectly()
         {
-            var sut = new SimpleFormatter() { MaxColLinesCount = 2 };
+            var sut = new SimpleTextFormatter() { MaxColLinesCount = 2 };
 
             var actual = sut.Format(_reportAsColumn);
 

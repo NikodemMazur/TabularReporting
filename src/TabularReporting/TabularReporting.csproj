@@ -62,7 +62,7 @@
     <Compile Include="RowLocation.cs" />
     <Compile Include="RowQueries\EveryRowQuery.cs" />
     <Compile Include="RowQueries\OneTimeRowQuery.cs" />
-    <Compile Include="SimpleFormatter.cs" />
+    <Compile Include="SimpleTextFormatter.cs" />
     <Compile Include="SimpleTextReader.cs" />
     <Compile Include="SimpleTextWriter.cs" />
     <Compile Include="StructuralEqualityComparer.cs" />

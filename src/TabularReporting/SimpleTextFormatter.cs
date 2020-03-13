@@ -8,7 +8,7 @@ using TabularReporting.Abstractions;
 
 namespace TabularReporting
 {
-    public class SimpleFormatter : IFormatter
+    public class SimpleTextFormatter : IFormatter
     {
         char _leftColMargin = ' ';
         char _rightColMargin = ' ';
@@ -53,7 +53,7 @@ namespace TabularReporting
         /// </summary>
         public int MaxColLinesCount { get => _maxColLinesCount; set => _maxColLinesCount = value; }
 
-        public SimpleFormatter()
+        public SimpleTextFormatter()
         {
             _endpointFormatter = new EndpointFormatter();
         }
