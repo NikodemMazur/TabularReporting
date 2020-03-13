@@ -86,8 +86,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExpectedTestResults.resx</DependentUpon>
     </Compile>
-    <Compile Include="ProjectorFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReporterFixture.cs" />
     <Compile Include="RowExtensionsFixture.cs" />
     <Compile Include="Union2Fixture.cs" />
   </ItemGroup>
