@@ -69,11 +69,11 @@ namespace TabularReporting.Tests
         }
     }
 
-    public class ProjectorFixture
+    public class ReporterFixture
     {
         readonly FakeType _type;
 
-        public ProjectorFixture()
+        public ReporterFixture()
         {
             _type = new FakeType(new FakeType(false),
                                  new FakeType(7),
