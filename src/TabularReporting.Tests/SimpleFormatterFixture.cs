@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace TabularReporting.Tests
 {
-    public class AntonioFormatterFixture
+    public class SimpleFormatterFixture
     {
         readonly IColumn _reportAsColumn;
 
-        public AntonioFormatterFixture()
+        public SimpleFormatterFixture()
         {
             _reportAsColumn = new Column(
                 new Row(
