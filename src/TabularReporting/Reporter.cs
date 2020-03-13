@@ -30,9 +30,9 @@ namespace TabularReporting
             // If the call doesn't have sourced queries or the source doesn't have elements, skip enumerating the source.
             if (rowQueries.OfType<ISourcedRowQuery<T>>().Count() == 0 || source.Count() == 0)
                 rowList.AddRange(ProjectToRowsCore(source, rowQueries));
-
-            foreach (T element in source)
-                rowList.AddRange(ProjectToRowsCore(element, rowQueries));
+            else
+                foreach (T element in source)
+                    rowList.AddRange(ProjectToRowsCore(element, rowQueries));
 
             return rowList;
 
