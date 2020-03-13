@@ -2,6 +2,6 @@
 {
     public interface IWriter
     {
-        void WriteReport(string report, string dir, string fileNameWithoutExtension);
+        string WriteReport(string report, string dir, string fileNameWithoutExtension);
     }
 }
