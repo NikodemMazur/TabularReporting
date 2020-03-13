@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TabularReporting
 {
-    public class EveryRowQuery : IRowQuery
+    public class EveryRowQuery<T> : ISourcedRowQuery<T>
     {
         readonly IEnumerable<IColumnQuery> _colQueries;
 
@@ -18,5 +18,7 @@ namespace TabularReporting
         public bool Predicate => true;
 
         public IEnumerable<IColumnQuery> ColumnQueries => _colQueries;
+
+        public T Source { get; set; }
     }
 }
