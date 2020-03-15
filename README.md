@@ -199,27 +199,14 @@ public class EnumerablePropertyObject : PropertyObject, IEnumerable<EnumerablePr
 ```csharp
 internal class FormattedValueGetter : ISourcedColumnQuery<EnumerablePropertyObject>
 {
-    readonly string _lookupString;
-    readonly string _printfFormat;
-    readonly string _prefix;
-    readonly string _postfix;
-    EnumerablePropertyObject _source;
+    // ...
 
     public FormattedValueGetter(string prefix, string lookupString, string postfix, string printfFormat = "")
     {
-        if (string.IsNullOrEmpty(lookupString))
-        {
-            throw new ArgumentException("Lookup string cannot be null or an empty string.", nameof(lookupString));
-        }
-
-        _prefix = prefix ?? throw new ArgumentNullException(nameof(prefix));
-        _lookupString = lookupString;
-        _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
-        _printfFormat = printfFormat;
+        // ...
     }
 
-    public FormattedValueGetter(string lookupString, string printfFormat = "")
-        : this(string.Empty, lookupString, string.Empty, printfFormat) { }
+    // ...
 
     EnumerablePropertyObject ISourcedColumnQuery<EnumerablePropertyObject>.Source { get => _source;  set => _source = value; }
 
@@ -231,5 +218,47 @@ internal class FormattedValueGetter : ISourcedColumnQuery<EnumerablePropertyObje
                                                                                    false,
                                                                                    string.Empty) +
                                                          _postfix);
+}
+
+internal class NumericDiff : ISourcedColumnQuery<EnumerablePropertyObject>
+{
+    // ...
+	
+    public NumericDiff(double initialValue, string lookupString, string format = "F3")
+    {
+        // ...
+    }
+
+    EnumerablePropertyObject ISourcedColumnQuery<EnumerablePropertyObject>.Source { get => _source; set => _source = value; }
+
+    Union2<IEnumerable<IRowQuery>, object> IColumnQuery.Content
+    {
+        get
+        {
+            double actual = _source.GetValNumber(_lookupString, PropertyOptions.PropOption_NoOptions);
+            double diff = actual - _register;
+            _register = actual;
+            return new Union2<IEnumerable<IRowQuery>, object>.Case2(string.Format($"{{0:{_format}}}", diff));
+        }
+    }
+}
+
+internal class ByStepTypeFilter : ISourcedRowQuery<EnumerablePropertyObject>
+{
+    // ...
+
+    public ByStepTypeFilter(string stepType, IEnumerable<IColumnQuery> colQueries)
+    {
+        // ...
+    }
+    
+	// ...
+
+    IEnumerable<IColumnQuery> IRowQuery.ColumnQueries => _colQueries;
+
+    EnumerablePropertyObject ISourcedRowQuery<EnumerablePropertyObject>.Source { get => _source; set => _source = value; }
+
+    bool IRowQuery.Predicate =>
+        _source.GetValString("TS.StepType", PropertyOptions.PropOption_NoOptions) == _stepType;
 }
 ```
