@@ -158,6 +158,37 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 
 ### More practical example (TestStand)
 
-#### 1. Make decorator of **PropertyObject**
+#### 1. Decorate **PropertyObject**
 
-To add: sequence view screenshots and code snippets for EnumerablePropertyObject
+```csharp
+public class EnumerablePropertyObject : PropertyObject, IEnumerable<EnumerablePropertyObject>
+{
+    readonly PropertyObject _propObj;
+
+    public EnumerablePropertyObject(PropertyObject propObj)
+    {
+        _propObj = propObj ?? throw new ArgumentNullException(nameof(propObj));
+    }
+
+	// ...
+	// PropertyObject implementation
+	// ...
+
+    public IEnumerator<EnumerablePropertyObject> GetEnumerator()
+    {
+        if (!_propObj.IsArray()) // If PropertyObject is not an array do not iterate.
+            yield break;
+
+        int numElements = _propObj.GetNumElements();
+        for (int i = 0; i < numElements; i++)
+        {
+            yield return new EnumerablePropertyObject(_propObj.GetPropertyObjectByOffset(i, PropertyOptions.PropOption_NoOptions));
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+}
+```
