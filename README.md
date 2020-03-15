@@ -158,4 +158,6 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 
 ### More practical example (TestStand)
 
+#### 1. Make decorator of **PropertyObject**
+
 To add: sequence view screenshots and code snippets for EnumerablePropertyObject
