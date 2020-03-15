@@ -20,7 +20,7 @@ To add: uml logical/development view
 In test-oriented companies it is common to develop and maintain large variety of report formats. This mini-framework is an attempt of standarization which allows for composing the tabular reporting out of interchangeable modules. Formatting often occurs along with the parsing back to the raw data. This task can be accomplished by creating a dual nature topology - that is, by defining two modules of opposite roles at once. That's how it's done here: the reporting principle of operation is opposite to the interpreting one, **IFormatter** is opposite to **IParser** and **IWriter** is opposite to **IReader**.
 
 ## Example
-
+### Report --> Format --> Write
 ```csharp
 // 1. Prepare result
 TestResult result =
@@ -74,7 +74,9 @@ string formattedReport = new SimpleTextFormatter().Format(reportedColumn);
 
 // 5. Write
 string reportPath = new SimpleTextWriter().WriteReport(formattedReport, Path.GetTempPath(), "MyReport");
-
+```
+### Read --> Parse --> Interpret
+```csharp
 // 6. Read
 string readReport = new SimpleTextReader().ReadReport(reportPath);
 Assert.Equal(formattedReport, readReport);
