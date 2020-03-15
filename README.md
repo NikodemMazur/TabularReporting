@@ -34,7 +34,7 @@ TestResult result =
         new TestResult("TestMethod4", TimeSpan.FromSeconds(2), true, "Empty", null));
 
 // 2. Define column (report) query
-IColumnQuery counterColQuery; // Mutable class - it's an ordinal column
+IColumnQuery counterColQuery = new CounterColumnQuery(); // Mutable class - it's an ordinal column
 IColumnQuery reportQuery =
     new ColumnQueryWithRows(
         new OneTimeRowQuery( // 2a. Define first header row
@@ -47,10 +47,20 @@ IColumnQuery reportQuery =
             new ColumnQueryWithStr("Final result"), 
             new ColumnQueryWithStr(result.Result.ToString())),
         // 2c. Define body
-        new ByAssertTypeFilter("Equal", counterColQuery = new CounterColumnQuery(), new NameGetter(), new ExecTimeInSecondsGetter(), new ResultGetter()),
-        new ByAssertTypeFilter("MultiTrue", counterColQuery, new NameGetter(), new ExecTimeInSecondsGetter(), new ColumnQueryWithRows(
-            new EveryRowQuery<EnumerableTestResult>(
-                new NameGetter(), new ExecTimeInSecondsGetter(), new ResultGetter()))));
+        new ByAssertTypeFilter("Equal", 
+            counterColQuery, 
+            new NameGetter(), 
+            new ExecTimeInSecondsGetter(), 
+            new ResultGetter()),
+        new ByAssertTypeFilter("MultiTrue", 
+            counterColQuery, 
+            new NameGetter(), 
+            new ExecTimeInSecondsGetter(), 
+            new ColumnQueryWithRows(
+                new EveryRowQuery<EnumerableTestResult>(
+                    new NameGetter(), 
+                    new ExecTimeInSecondsGetter(), 
+                    new ResultGetter()))));
 
 // 3. Report
 IColumn reportedColumn =
