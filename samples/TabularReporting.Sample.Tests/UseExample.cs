@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using TabularReporting.Abstractions;
 using System.IO;
@@ -26,7 +24,7 @@ namespace TabularReporting.Sample.Tests
                     new TestResult("TestMethod4", TimeSpan.FromSeconds(2), true, "Empty", null));
 
             // 2. Define column (report) query
-            IColumnQuery counterColQuery;
+            IColumnQuery counterColQuery = new CounterColumnQuery(); // Mutable class - it's an ordinal column
             IColumnQuery reportQuery =
                 new ColumnQueryWithRows(
                     new OneTimeRowQuery( // 2a. Define first header row
@@ -39,10 +37,20 @@ namespace TabularReporting.Sample.Tests
                         new ColumnQueryWithStr("Final result"), 
                         new ColumnQueryWithStr(result.Result.ToString())),
                     // 2c. Define body
-                    new ByAssertTypeFilter("Equal", counterColQuery = new CounterColumnQuery(), new NameGetter(), new ExecTimeInSecondsGetter(), new ResultGetter()),
-                    new ByAssertTypeFilter("MultiTrue", counterColQuery, new NameGetter(), new ExecTimeInSecondsGetter(), new ColumnQueryWithRows(
-                        new EveryRowQuery<EnumerableTestResult>(
-                            new NameGetter(), new ExecTimeInSecondsGetter(), new ResultGetter()))));
+                    new ByAssertTypeFilter("Equal", 
+                        counterColQuery, 
+                        new NameGetter(), 
+                        new ExecTimeInSecondsGetter(), 
+                        new ResultGetter()),
+                    new ByAssertTypeFilter("MultiTrue", 
+                        counterColQuery, 
+                        new NameGetter(), 
+                        new ExecTimeInSecondsGetter(), 
+                        new ColumnQueryWithRows(
+                            new EveryRowQuery<EnumerableTestResult>(
+                                new NameGetter(), 
+                                new ExecTimeInSecondsGetter(), 
+                                new ResultGetter()))));
 
             // 3. Report
             IColumn reportedColumn =
@@ -65,7 +73,9 @@ namespace TabularReporting.Sample.Tests
             IColumn parsedColumn = new SimpleTextParser().Parse(readReport);
 
             // 8. Interpret
-
+            IEnumerable<IRow> rows = parsedColumn.Content.Extract(rows_ => rows_, obj => null);
+            string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => null, obj => obj.ToString());
+            // etc...
         }
     }
 }
