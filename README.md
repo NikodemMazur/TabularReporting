@@ -1,6 +1,6 @@
 ### What is it?
 Extensible framework for creating tabular reports from any type.
-To add: graphic preseting operation of main interfaces.
+
 ### Terminology
 - `source` - A type **T** implementing **IEnumerable\<T\>** from which you want to create a `report`.
 - `report` - Composition of `row`s and `column`s.
@@ -89,8 +89,6 @@ IEnumerable<IRow> rows = parsedColumn.Content.Extract(rows_ => rows_, obj => nul
 string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => null, obj => obj.ToString());
 // etc...
 ```
-
-To add: code snippets for sample type.
 
 ## More practical example (TestStand)
 
