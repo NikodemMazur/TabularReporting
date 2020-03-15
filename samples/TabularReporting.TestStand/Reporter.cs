@@ -8,7 +8,7 @@ namespace TabularReporting.TestStand
     {
         Reporter<EnumerablePropertyObject> _reporter;
 
-        public Reporter(PropertyObject source, params IRowQuery[] reportRowQueries) : base()
+        public Reporter()
         {
             _reporter = new Reporter<EnumerablePropertyObject>();
         }
