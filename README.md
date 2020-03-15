@@ -182,7 +182,8 @@ public class EnumerablePropertyObject : PropertyObject, IEnumerable<EnumerablePr
         int numElements = _propObj.GetNumElements();
         for (int i = 0; i < numElements; i++)
         {
-            yield return new EnumerablePropertyObject(_propObj.GetPropertyObjectByOffset(i, PropertyOptions.PropOption_NoOptions));
+            yield return new EnumerablePropertyObject(_propObj.GetPropertyObjectByOffset(i,
+				PropertyOptions.PropOption_NoOptions));
         }
     }
 
@@ -190,5 +191,45 @@ public class EnumerablePropertyObject : PropertyObject, IEnumerable<EnumerablePr
     {
         return GetEnumerator();
     }
+}
+```
+
+#### 2. Implement queries
+
+```csharp
+internal class FormattedValueGetter : ISourcedColumnQuery<EnumerablePropertyObject>
+{
+    readonly string _lookupString;
+    readonly string _printfFormat;
+    readonly string _prefix;
+    readonly string _postfix;
+    EnumerablePropertyObject _source;
+
+    public FormattedValueGetter(string prefix, string lookupString, string postfix, string printfFormat = "")
+    {
+        if (string.IsNullOrEmpty(lookupString))
+        {
+            throw new ArgumentException("Lookup string cannot be null or an empty string.", nameof(lookupString));
+        }
+
+        _prefix = prefix ?? throw new ArgumentNullException(nameof(prefix));
+        _lookupString = lookupString;
+        _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
+        _printfFormat = printfFormat;
+    }
+
+    public FormattedValueGetter(string lookupString, string printfFormat = "")
+        : this(string.Empty, lookupString, string.Empty, printfFormat) { }
+
+    EnumerablePropertyObject ISourcedColumnQuery<EnumerablePropertyObject>.Source { get => _source;  set => _source = value; }
+
+    Union2<IEnumerable<IRowQuery>, object> IColumnQuery.Content =>
+        new Union2<IEnumerable<IRowQuery>, object>.Case2(_prefix +
+                                                         _source.GetFormattedValue(_lookupString,
+                                                                                   PropertyOptions.PropOption_NoOptions,
+                                                                                   _printfFormat,
+                                                                                   false,
+                                                                                   string.Empty) +
+                                                         _postfix);
 }
 ```
