@@ -64,9 +64,15 @@ public class EnumerableTestResult : TestResult, IEnumerable<EnumerableTestResult
 ```
 
 ### Topology overview
-To add: uml logical/development view
 
-In test-oriented companies it is common to develop and maintain large variety of report formats. This mini-framework is an attempt of standarization which allows for composing the tabular reporting out of interchangeable modules. Formatting often occurs along with the parsing back to the raw data. This task can be accomplished by creating a dual nature topology - that is, by defining two modules of opposite roles at once. That's how it's done here: the reporting principle of operation is opposite to the interpreting one, **IFormatter** is opposite to **IParser** and **IWriter** is opposite to **IReader**.
+#### Dual nature topology
+
+Defining two modules of opposite roles at once:
+-  `reporting` <--> `interpreting`
+- **IFormatter** <--> **IParser**
+- **IWriter** <--> **IReader**
+
+#### UML (Logical & Development View)
 
 ### Example
 #### Report --> Format --> Write
@@ -137,6 +143,26 @@ IColumn parsedColumn = new SimpleTextParser().Parse(readReport);
 IEnumerable<IRow> rows = parsedColumn.Content.Extract(rows_ => rows_, obj => null);
 string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => null, obj => obj.ToString());
 // etc...
+```
+
+#### Output of **SimpleTextFormatter**
+
+```none
++--------------------------------------------+
+¦ Date                  ¦ 15.03.2020         ¦
+¦-----------------------+--------------------¦
+¦ Tested by             ¦ Me                 ¦
+¦-----------------------+--------------------¦
+¦ Final result          ¦ False              ¦
+¦--------------------------------------------¦
+¦ 0 ¦ TestMethod0 ¦ 2 ¦ True                 ¦
+¦---+-------------+---+----------------------¦
+¦ 1 ¦ TestMethod1 ¦ 2 ¦ Subtest0 ¦ 1 ¦ True  ¦
+¦   ¦             ¦   ¦----------+---+-------¦
+¦   ¦             ¦   ¦ Subtest1 ¦ 1 ¦ False ¦
+¦---+-------------+---+----------------------¦
+¦ 2 ¦ TestMethod3 ¦ 2 ¦ True                 ¦
++--------------------------------------------+
 ```
 
 ### More practical example (TestStand)
