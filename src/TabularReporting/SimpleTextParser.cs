@@ -1,4 +1,5 @@
-﻿using TabularReporting.Abstractions;
+﻿using System;
+using TabularReporting.Abstractions;
 
 namespace TabularReporting
 {
@@ -6,8 +7,7 @@ namespace TabularReporting
     {
         public IColumn Parse(string report)
         {
-#warning To do
-            return new Column();
+            throw new NotImplementedException();
         }
     }
 }
