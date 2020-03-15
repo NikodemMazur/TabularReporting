@@ -15,14 +15,61 @@ Extensible framework for creating tabular reports from any type.
 ### Decorator needed.
 The type **T** is expected to implement **IEnumerable\<T\>** which means that it may contain child elements of its type. In this way, the input source reflects the data hierarchy defined by columns and rows composition - a column can contain rows, which in turn contain columns.
 
-To add: decorator code of sample type
+#### Type
+
+```csharp
+public class TestResult
+{
+    public string TestName { get; set; }
+    public TimeSpan ExecutionTime { get; set; }
+    public bool Result { get; set; }
+    public string AssertType { get; set; }
+    public IEnumerable<TestResult> InnerTests { get; set; }
+
+    public TestResult(string testName, TimeSpan executionTime,
+        bool result, string assertType, IEnumerable<TestResult> innerTests)
+    {
+        // ...
+    }
+
+    // ...
+}
+```
+#### Decorator
+
+```csharp
+public class EnumerableTestResult : TestResult, IEnumerable<EnumerableTestResult>
+{
+    readonly TestResult _testResult;
+
+    // Ctor accepting object to decorate
+    public EnumerableTestResult(TestResult testResult) 
+        : base(testResult.TestName, testResult.ExecutionTime, testResult.Result, testResult.AssertType, testResult.InnerTests)
+    {
+        _testResult = testResult;
+    }
+
+    // The only job you have to do
+    public IEnumerator<EnumerableTestResult> GetEnumerator()
+    {
+        foreach (TestResult it in _testResult.InnerTests)
+            yield return new EnumerableTestResult(it);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+}
+```
+
 ### Topology overview
 To add: uml logical/development view
 
 In test-oriented companies it is common to develop and maintain large variety of report formats. This mini-framework is an attempt of standarization which allows for composing the tabular reporting out of interchangeable modules. Formatting often occurs along with the parsing back to the raw data. This task can be accomplished by creating a dual nature topology - that is, by defining two modules of opposite roles at once. That's how it's done here: the reporting principle of operation is opposite to the interpreting one, **IFormatter** is opposite to **IParser** and **IWriter** is opposite to **IReader**.
 
-## Example
-### Report --> Format --> Write
+### Example
+#### Report --> Format --> Write
 ```csharp
 // 1. Prepare result
 TestResult result =
@@ -77,7 +124,7 @@ string formattedReport = new SimpleTextFormatter().Format(reportedColumn);
 // 5. Write
 string reportPath = new SimpleTextWriter().WriteReport(formattedReport, Path.GetTempPath(), "MyReport");
 ```
-### Read --> Parse --> Interpret
+#### Read --> Parse --> Interpret
 ```csharp
 // 6. Read
 string readReport = new SimpleTextReader().ReadReport(reportPath);
@@ -92,6 +139,6 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 // etc...
 ```
 
-## More practical example (TestStand)
+### More practical example (TestStand)
 
 To add: sequence view screenshots and code snippets for EnumerablePropertyObject
