@@ -10,7 +10,7 @@ namespace TabularReporting.Sample
 
         // Ctor accepting object to decorate
         public EnumerableTestResult(TestResult testResult) 
-            : base(testResult.TestMethodName, testResult.ExecutionTime, testResult.Result, testResult.AssertType, testResult.InnerTests)
+            : base(testResult.TestName, testResult.ExecutionTime, testResult.Result, testResult.AssertType, testResult.InnerTests)
         {
             _testResult = testResult;
         }
