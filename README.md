@@ -63,19 +63,10 @@ public class EnumerableTestResult : TestResult, IEnumerable<EnumerableTestResult
 }
 ```
 
-### Topology overview
-
-#### Dual nature topology
-
-Define two modules of opposite roles at once:
--  `reporting` <--> `interpreting`
-- **IFormatter** <--> **IParser**
-- **IWriter** <--> **IReader**
-
-#### UML (Logical & Development View)
-
 ### Example
+
 #### Report --> Format --> Write
+
 ```csharp
 // 1. Prepare result
 TestResult result =
