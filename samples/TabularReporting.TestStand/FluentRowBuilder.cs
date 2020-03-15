@@ -8,8 +8,9 @@ namespace TabularReporting.TestStand
     /// </summary>
     public class FluentRowBuilder
     {
-
         List<IColumnQuery> _colQueries;
+        static readonly IDictionary<string, IColumnQuery> _countersDict = new Dictionary<string, IColumnQuery>();
+        static readonly object _countersDictPadLock = new object();
 
         // Hide ctor from users.
         protected FluentRowBuilder() => _colQueries = new List<IColumnQuery>();
@@ -78,13 +79,23 @@ namespace TabularReporting.TestStand
         /// <summary>
         /// Adds column with memory which increments returned value at each use.
         /// </summary>
+        /// <param name="counterName">ID of counter.</param>
         /// <param name="countFromOne">When true this column counts from one instead of zero.</param>
         /// <param name="format">CSharp standard numeric format string.</param>
         /// <returns></returns>
-        public FluentRowBuilder AddColCounter(bool countFromOne = true, string format = "D")
+        public FluentRowBuilder AddColCounter(string counterName = "", bool countFromOne = true, string format = "D")
         {
-            var col = new CounterColumnQuery(countFromOne, format);
-            _colQueries.Add(col);
+            lock (_countersDictPadLock)
+            {
+                if (_countersDict.TryGetValue(counterName, out IColumnQuery value))
+                    _colQueries.Add(value);
+                else
+                {
+                    var col = new CounterColumnQuery(countFromOne, format);
+                    _colQueries.Add(col);
+                    _countersDict[counterName] = col;
+                }
+            }
             return this;
         }
 
