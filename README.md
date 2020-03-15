@@ -263,7 +263,7 @@ internal class ByStepTypeFilter : ISourcedRowQuery<EnumerablePropertyObject>
 }
 ```
 
-#### 3. Define columns and rows
+#### 3. Define columns/rows and report
 
 Use **TabularReporting.TestStand.FluentRowBuilder** for convenient in-TestStand use.
 
@@ -289,4 +289,17 @@ IColumn reportColumn = new Reporter().Report(mainSequenceResult, columnNamesRow,
 string reportStr = new SimpleTextFormatter().Format(reportColumn);
 
 // ...
+```
+
+Value of `reportStr` is
+```none
++---------------------------------------------------+
+¦ No. ¦ Name                 ¦ Result       ¦ Time  ¦
+¦-----+----------------------+--------------+-------¦
+¦ 1   ¦ Numeric Limit Test 0 ¦ Value: 2.500 ¦ 0.076 ¦
+¦-----+----------------------+--------------+-------¦
+¦ 2   ¦ Numeric Limit Test 1 ¦ Value: 2.700 ¦ 0.012 ¦
+¦-----+----------------------+--------------+-------¦
+¦ 3   ¦ Numeric Limit Test 2 ¦ Value: 1.000 ¦ 1.008 ¦
++---------------------------------------------------+
 ```
