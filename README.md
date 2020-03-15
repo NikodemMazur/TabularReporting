@@ -67,7 +67,7 @@ public class EnumerableTestResult : TestResult, IEnumerable<EnumerableTestResult
 
 #### Dual nature topology
 
-Defining two modules of opposite roles at once:
+Define two modules of opposite roles at once:
 -  `reporting` <--> `interpreting`
 - **IFormatter** <--> **IParser**
 - **IWriter** <--> **IReader**
