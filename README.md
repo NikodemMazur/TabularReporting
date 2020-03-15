@@ -262,3 +262,31 @@ internal class ByStepTypeFilter : ISourcedRowQuery<EnumerablePropertyObject>
         _source.GetValString("TS.StepType", PropertyOptions.PropOption_NoOptions) == _stepType;
 }
 ```
+
+#### 3. Define columns and rows
+
+Use **TabularReporting.TestStand.FluentRowBuilder** for convenient in-TestStand use.
+
+```csharp
+// ...
+
+IRowQuery columnNamesRow =
+    FluentRowBuilder.CreateRowBuilder().AddColWithStr("No.")
+                                       .AddColWithStr("Name")
+                                       .AddColWithStr("Result")
+                                       .AddColWithStr("Time")
+                                       .BuildOneTimeRow();
+
+IRowQuery numericLimitTestRow =
+    FluentRowBuilder.CreateRowBuilder().AddColCounter()
+                                       .AddColWithFormattedValue("TS.StepName")
+                                       .AddColWithFormattedValue("Value: ", "Numeric", string.Empty)
+                                       .AddColNumericDiff(mainSequenceResult.GetValNumber("TS.StartTime", 0x0), "TS.StartTime")
+                                       .BuildRowByStepType("NumericLimitTest");
+
+IColumn reportColumn = new Reporter().Report(mainSequenceResult, columnNamesRow, numericLimitTestRow);
+
+string reportStr = new SimpleTextFormatter().Format(reportColumn);
+
+// ...
+```
