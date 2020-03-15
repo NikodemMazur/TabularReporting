@@ -27,10 +27,24 @@ namespace TabularReporting.Sample
             bool result, string assertType, params TestResult[] innerTests)
                 : this(testName, executionTime, result, assertType, innerTests.AsEnumerable()) { }
 
-        public override string ToString()
+        string ToStringCore(int indent)
         {
             var sb = new StringBuilder();
-            string str = string.Format("TestMetho")
+            sb.AppendFormat("[TestName: {0}; ExecutionTime: {1}; Result: {2}; AssertType: {3}; InnerTests: ",
+                TestName, ExecutionTime, Result, AssertType);
+            if (InnerTests != null)
+            {
+                foreach (var it in InnerTests)
+                {
+                    sb.Append($"{Environment.NewLine}");
+                    sb.Append(new string('\t', indent));
+                    sb.Append(it.ToStringCore(indent + 1));
+                }
+            }
+            sb.Append("]");
+            return sb.ToString();
         }
+
+        public override string ToString() => ToStringCore(1);
     }
 }
