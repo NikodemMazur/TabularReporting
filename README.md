@@ -1,6 +1,6 @@
 ### What is it?
 Extensible framework for creating tabular reports from any type.
-
+![What is it?](/images/what_is_it.png)
 ### Terminology
 - `source` - A type **T** implementing **IEnumerable\<T\>** from which you want to create a `report`.
 - `report` - Composition of `row`s and `column`s.
