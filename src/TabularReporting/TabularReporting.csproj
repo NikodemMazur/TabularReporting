@@ -53,6 +53,7 @@
     <Compile Include="ColumnExtensions.cs" />
     <Compile Include="ColumnLocation.cs" />
     <Compile Include="ColumnQueries\ColumnQueryWithRows.cs" />
+    <Compile Include="ColumnQueries\ColumnQueryWithRowsBranched.cs" />
     <Compile Include="ColumnQueries\ColumnQueryWithStr.cs" />
     <Compile Include="ColumnQueries\CounterColumnQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
