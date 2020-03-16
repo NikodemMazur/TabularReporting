@@ -1,5 +1,7 @@
 ﻿using TabularReporting.Abstractions;
 using System.Collections.Generic;
+using NationalInstruments.TestStand.Interop.API;
+using System;
 
 namespace TabularReporting.TestStand
 {
@@ -57,7 +59,7 @@ namespace TabularReporting.TestStand
         /// </summary>
         /// <param name="rowQueries">Product of <see cref="BuildOneTimeRow"/> or <see cref="BuildRowByStepType(string)"/>.</param>
         /// <returns></returns>
-        public FluentRowBuilder AddColWithRows(IRowQuery[] rowQueries)
+        public FluentRowBuilder AddColWithRows(params IRowQuery[] rowQueries)
         {
             var col = new ColumnQueryWithRows(rowQueries);
             _colQueries.Add(col);
@@ -114,7 +116,21 @@ namespace TabularReporting.TestStand
         }
 
         /// <summary>
-        /// Builds row which process TestStand array elements only if an element's StepType equals <paramref name="stepType"/>.
+        /// Adds column which changes path of projection. Use this column to iterate an array subproperty.
+        /// </summary>
+        /// <param name="lookupString">TestStand lookup string to branch.</param>
+        /// <param name="rowQueries">Product of <see cref="BuildOneTimeRow"/> or <see cref="BuildRowByStepType(string)"/></param>
+        /// <returns></returns>
+        public FluentRowBuilder AddColWithRowsFromPropertyObject(string lookupString, params IRowQuery[] rowQueries)
+        {
+            var col = new ColumnQueryWithRowsBranched<EnumerablePropertyObject>(epo =>
+                new EnumerablePropertyObject(epo.GetPropertyObject(lookupString, 0x0)), rowQueries);
+            _colQueries.Add(col);
+            return this;
+        }
+
+        /// <summary>
+        /// Builds row which processes TestStand array elements only if an element's StepType equals <paramref name="stepType"/>.
         /// </summary>
         /// <param name="stepType">TestStand step type. For example, 'PassFailTest'.</param>
         /// <returns></returns>
@@ -132,5 +148,13 @@ namespace TabularReporting.TestStand
             return new OneTimeRowQuery(_colQueries.ToArray());
         }
 
+        /// <summary>
+        /// Builds row which processes every element (its predicate is always true).
+        /// </summary>
+        /// <returns></returns>
+        public IRowQuery BuildEveryRow()
+        {
+            return new EveryRowQuery<EnumerablePropertyObject>(_colQueries.ToArray());
+        }
     }
 }
