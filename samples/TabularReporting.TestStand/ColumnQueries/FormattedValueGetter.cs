@@ -15,13 +15,8 @@ namespace TabularReporting.TestStand
 
         public FormattedValueGetter(string prefix, string lookupString, string postfix, string printfFormat = "")
         {
-            if (string.IsNullOrEmpty(lookupString))
-            {
-                throw new ArgumentException("Lookup string cannot be null or an empty string.", nameof(lookupString));
-            }
-
             _prefix = prefix ?? throw new ArgumentNullException(nameof(prefix));
-            _lookupString = lookupString;
+            _lookupString = lookupString ?? throw new ArgumentNullException(nameof(lookupString));
             _postfix = postfix ?? throw new ArgumentNullException(nameof(postfix));
             _printfFormat = printfFormat;
         }
