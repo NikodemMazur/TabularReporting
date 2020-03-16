@@ -94,6 +94,14 @@
     <Analyzer Include="..\..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\TabularReporting.Abstractions\TabularReporting.Abstractions.csproj">
+      <Project>{12D50155-1F55-4BFF-AEA3-0D4C470B06C9}</Project>
+      <Name>TabularReporting.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\TabularReporting\TabularReporting.csproj">
+      <Project>{02e622b3-284e-44cb-885f-e74581ddeaa6}</Project>
+      <Name>TabularReporting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TabularReporting.TestStand\TabularReporting.TestStand.csproj">
       <Project>{48af9e57-2a6f-47e0-aa52-fb80d6c313f2}</Project>
       <Name>TabularReporting.TestStand</Name>

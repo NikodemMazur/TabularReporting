@@ -49,11 +49,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultGetter.cs" />
     <Compile Include="TestResult.cs" />
+    <Compile Include="UseExample.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\TabularReporting.Abstractions\TabularReporting.Abstractions.csproj">
       <Project>{12D50155-1F55-4BFF-AEA3-0D4C470B06C9}</Project>
       <Name>TabularReporting.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\TabularReporting\TabularReporting.csproj">
+      <Project>{02e622b3-284e-44cb-885f-e74581ddeaa6}</Project>
+      <Name>TabularReporting</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

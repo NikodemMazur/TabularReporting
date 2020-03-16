@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 using TabularReporting.Abstractions;
 using System.IO;
 
-namespace TabularReporting.Sample.Tests
+namespace TabularReporting.Sample
 {
     public class UseExample
     {
-        [Fact]
+        /// <summary>
+        /// This method has been never run.
+        /// </summary>
         public void Show()
         {
             // 1. Prepare result
@@ -67,7 +68,6 @@ namespace TabularReporting.Sample.Tests
 
             // 6. Read
             string readReport = new SimpleTextReader().ReadReport(reportPath);
-            Assert.Equal(formattedReport, readReport);
 
             // 7. Parse
             IColumn parsedColumn = new SimpleTextParser().Parse(readReport);
