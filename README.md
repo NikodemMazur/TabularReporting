@@ -291,7 +291,63 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
 // ...
 ```
 
-Value of `reportStr` is
+`reportColumn`:
+```xml
+<Column>
+  <Row>
+    <Column>No.</Column>
+    <Column>Name</Column>
+    <Column>Result</Column>
+    <Column>Time</Column>
+  </Row>
+  <Row>
+    <Column>31</Column>
+    <Column>Numeric Limit Test 0</Column>
+    <Column>Value: 2.500</Column>
+    <Column>0.000</Column>
+  </Row>
+  <Row>
+    <Column>33</Column>
+    <Column>Multiple Numeric Limit Test 0</Column>
+    <Column>
+      <Row>
+        <Column>0.000</Column>
+      </Row>
+      <Row>
+        <Column>7.000</Column>
+      </Row>
+    </Column>
+    <Column>0.000</Column>
+  </Row>
+  <Row>
+    <Column>35</Column>
+    <Column>Numeric Limit Test 1</Column>
+    <Column>Value: 2.700</Column>
+    <Column>0.000</Column>
+  </Row>
+  <Row>
+    <Column>37</Column>
+    <Column>Numeric Limit Test 2</Column>
+    <Column>Value: 1.000</Column>
+    <Column>0.000</Column>
+  </Row>
+  <Row>
+    <Column>39</Column>
+    <Column>Multiple Numeric Limit Test 1</Column>
+    <Column>
+      <Row>
+        <Column>7.000</Column>
+      </Row>
+      <Row>
+        <Column>1.000</Column>
+      </Row>
+    </Column>
+    <Column>0.000</Column>
+  </Row>
+</Column>
+```
+
+`reportStr`:
 ```none
 +---------------------------------------------------+
 ¦ No. ¦ Name                 ¦ Result       ¦ Time  ¦
