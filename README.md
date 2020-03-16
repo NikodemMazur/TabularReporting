@@ -12,6 +12,7 @@ Extensible framework for creating tabular reports from any type.
 - `reporting` - The act of creating a `report` as **IColumn** from `source` using `query`ies.
 - `query` - The information about how to process a `source` to get `row`s or a `column`.
 - `interpreting` - The act of translating a report as **IColumn** to real-world data fields you extracted from `source` during `reporting`.
+- `branching` - change of path so that reporter iterates different object rather than **T** : IEnumerable\<T\>.
 ### Decorator needed.
 The type **T** is expected to implement **IEnumerable\<T\>** which means that it may contain child elements of its type. In this way, the input source reflects the data hierarchy defined by columns and rows composition - a column can contain rows, which in turn contain columns.
 
@@ -270,6 +271,7 @@ Use **TabularReporting.TestStand.FluentRowBuilder** for convenient in-TestStand 
 ```csharp
 // ...
 
+// 1. Define column descriptions.
 IRowQuery columnNamesRow =
     FluentRowBuilder.CreateRowBuilder().AddColWithStr("No.")
                                        .AddColWithStr("Name")
@@ -277,6 +279,7 @@ IRowQuery columnNamesRow =
                                        .AddColWithStr("Time")
                                        .BuildOneTimeRow();
 
+// 2. Define rows made from NumericLimitTest steps.
 IRowQuery numericLimitTestRow =
     FluentRowBuilder.CreateRowBuilder().AddColCounter()
                                        .AddColWithFormattedValue("TS.StepName")
@@ -284,8 +287,19 @@ IRowQuery numericLimitTestRow =
                                        .AddColNumericDiff(mainSequenceResult.GetValNumber("TS.StartTime", 0x0), "TS.StartTime")
                                        .BuildRowByStepType("NumericLimitTest");
 
-IColumn reportColumn = new Reporter().Report(mainSequenceResult, columnNamesRow, numericLimitTestRow);
+// 3. Define rows made from MultipleNumericLimitTest steps.
+IRowQuery multipleNumericLimitTestRow =
+    FluentRowBuilder.CreateRowBuilder().AddColCounter()
+                                       .AddColWithFormattedValue("TS.StepName")
+                                       .AddColWithRowsFromPropertyObject("Measurement",
+                                            FluentRowBuilder.CreateRowBuilder().AddColWithFormattedValue("Data", "%.3f").BuildEveryRow())
+                                       .AddColNumericDiff(mainSequenceResult.GetValNumber("TS.StartTime", 0x0), "TS.StartTime")
+                                       .BuildRowByStepType("NI_MultipleNumericLimitTest");
 
+// 4. Report (the projection happens here).
+IColumn reportColumn = new Reporter().Report(mainSequenceResult, columnNamesRow, numericLimitTestRow, multipleNumericLimitTestRow);
+
+// 5. Format to textual table.
 string reportStr = new SimpleTextFormatter().Format(reportColumn);
 
 // ...
