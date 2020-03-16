@@ -16,18 +16,15 @@ namespace TabularReporting
 
         ColUnion PopulateColumn(T source, IColumnQuery colQuery)
         {
-            // If the type implements ISourcedXXXQuery, you must specify the source first.
             if (colQuery is ISourcedColumnQuery<T> sourcedColQuery)
             {
-                sourcedColQuery.Source = source;
+                sourcedColQuery.Source = source; // If the type implements ISourcedXXXQuery, you must specify the source first.
                 return colQuery.Content.Extract<ColUnion>(rq => new ColUnion.Case1(ProjectToRows(sourcedColQuery.Source, rq)),
                     obj => new ColUnion.Case2(obj));
             }
             else
-            {
                 return colQuery.Content.Extract<ColUnion>(rq => new ColUnion.Case1(ProjectToRows(source, rq)),
                     obj => new ColUnion.Case2(obj));
-            }
         }
 
         IEnumerable<IRow> ProjectToRows(T source, IEnumerable<IRowQuery> rowQueries)
@@ -50,10 +47,10 @@ namespace TabularReporting
                 {
 
                     IRow row;
-                    // If the type implements ISourcedXXXQuery, you must specify the source first.
+                    
                     if (rowQuery is ISourcedRowQuery<T> sourcedRowQuery)
                     {
-                        sourcedRowQuery.Source = source_; // Provide source.
+                        sourcedRowQuery.Source = source_; // If the type implements ISourcedXXXQuery, you must specify the source first.
                         // Compound new row recursively. Take source from sourced row query to allow for branching.
                         if (rowQuery.Predicate)
                             row = new Row(rowQuery.ColumnQueries.Select(cq => ProjectToColumn(sourcedRowQuery.Source, cq)).ToArray());
