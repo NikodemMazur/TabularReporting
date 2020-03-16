@@ -18,9 +18,16 @@ namespace TabularReporting
         {
             // If the type implements ISourcedXXXQuery, you must specify the source first.
             if (colQuery is ISourcedColumnQuery<T> sourcedColQuery)
+            {
                 sourcedColQuery.Source = source;
-            return colQuery.Content.Extract<ColUnion>(rq => new ColUnion.Case1(ProjectToRows(source, rq)),
-                                          obj => new ColUnion.Case2(obj));
+                return colQuery.Content.Extract<ColUnion>(rq => new ColUnion.Case1(ProjectToRows(sourcedColQuery.Source, rq)),
+                    obj => new ColUnion.Case2(obj));
+            }
+            else
+            {
+                return colQuery.Content.Extract<ColUnion>(rq => new ColUnion.Case1(ProjectToRows(source, rq)),
+                    obj => new ColUnion.Case2(obj));
+            }
         }
 
         IEnumerable<IRow> ProjectToRows(T source, IEnumerable<IRowQuery> rowQueries)
@@ -41,14 +48,20 @@ namespace TabularReporting
                 var rowList_ = new List<IRow>();
                 foreach (IRowQuery rowQuery in rowQueries_)
                 {
+
+                    IRow row;
                     // If the type implements ISourcedXXXQuery, you must specify the source first.
                     if (rowQuery is ISourcedRowQuery<T> sourcedRowQuery)
+                    {
                         sourcedRowQuery.Source = source_; // Provide source.
-
+                        // Compound new row recursively. Take source from sourced row query to allow for branching.
+                        if (rowQuery.Predicate)
+                            row = new Row(rowQuery.ColumnQueries.Select(cq => ProjectToColumn(sourcedRowQuery.Source, cq)).ToArray());
+                    }
                     if (rowQuery.Predicate)
                     {
                         // Compound new row recursively.
-                        var row = new Row(rowQuery.ColumnQueries.Select(cq => ProjectToColumn(source_, cq)).ToArray());
+                        row = new Row(rowQuery.ColumnQueries.Select(cq => ProjectToColumn(source_, cq)).ToArray());
                         // Append the row.
                         rowList_.Add(row);
                     }
