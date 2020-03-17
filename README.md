@@ -139,6 +139,7 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 
 `reportedColumn`:
 
+```xml
 <Column>
   <Row>
     <Column>Date</Column>
@@ -182,6 +183,7 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
     <Column>True</Column>
   </Row>
 </Column>
+```
 
 `formattedReport`:
 
