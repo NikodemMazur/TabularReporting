@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TabularReporting.Abstractions;
 using System.IO;
+using Xunit;
 using TabularReporting;
 
 namespace TabularReporting.Sample.Tests
@@ -12,7 +13,7 @@ namespace TabularReporting.Sample.Tests
         /// <summary>
         /// This code is for demo purpose
         /// </summary>
-        /// // [Fact]
+        // [Fact]
         public void Show()
         {
             // 1. Prepare result
