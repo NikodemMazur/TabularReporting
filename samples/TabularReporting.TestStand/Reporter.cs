@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace TabularReporting.TestStand
 {
+    /// <summary>
+    /// This class is a non-generic wrapper for use in TestStand.
+    /// </summary>
     public class Reporter
     {
         Reporter<EnumerablePropertyObject> _reporter;
