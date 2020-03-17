@@ -3,7 +3,7 @@ using NationalInstruments.TestStand.Interop.API;
 
 namespace TabularReporting.TestStand
 {
-    public class UseExample
+    public class UnrunnableDemo
     {
         /// <summary>
         /// This method has been never run.

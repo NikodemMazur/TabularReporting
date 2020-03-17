@@ -7,7 +7,7 @@ using TabularReporting;
 
 namespace TabularReporting.Sample.Tests
 {
-    public class UseExample
+    public class UnrunnableDemo
     {
         /// <summary>
         /// This code is for demo purpose
