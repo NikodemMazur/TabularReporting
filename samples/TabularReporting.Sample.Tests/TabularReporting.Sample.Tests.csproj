@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F6594A7C-45DB-4B36-9E47-6FE1BB29B529}</ProjectGuid>
+    <ProjectGuid>{9F83972E-350B-4F5C-97AE-DDA438B88874}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TabularReporting.Sample</RootNamespace>
-    <AssemblyName>TabularReporting.Sample</AssemblyName>
+    <RootNamespace>TabularReporting.Sample.Tests</RootNamespace>
+    <AssemblyName>TabularReporting.Sample.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -29,7 +29,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -42,22 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ByAssertTypeFilter.cs" />
-    <Compile Include="EnumerableTestResult.cs" />
-    <Compile Include="ExecTimeInSecondsGetter.cs" />
-    <Compile Include="NameGetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResultGetter.cs" />
-    <Compile Include="TestResult.cs" />
+    <Compile Include="UseExample.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\TabularReporting.Abstractions\TabularReporting.Abstractions.csproj">
-      <Project>{12D50155-1F55-4BFF-AEA3-0D4C470B06C9}</Project>
+      <Project>{12d50155-1f55-4bff-aea3-0d4c470b06c9}</Project>
       <Name>TabularReporting.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\TabularReporting\TabularReporting.csproj">
       <Project>{02e622b3-284e-44cb-885f-e74581ddeaa6}</Project>
       <Name>TabularReporting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TabularReporting.Sample\TabularReporting.Sample.csproj">
+      <Project>{f6594a7c-45db-4b36-9e47-6fe1bb29b529}</Project>
+      <Name>TabularReporting.Sample</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

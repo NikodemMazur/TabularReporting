@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.TestStand.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.Sample", "samples\TabularReporting.Sample\TabularReporting.Sample.csproj", "{F6594A7C-45DB-4B36-9E47-6FE1BB29B529}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabularReporting.Sample.Tests", "samples\TabularReporting.Sample.Tests\TabularReporting.Sample.Tests.csproj", "{9F83972E-350B-4F5C-97AE-DDA438B88874}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{F6594A7C-45DB-4B36-9E47-6FE1BB29B529}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6594A7C-45DB-4B36-9E47-6FE1BB29B529}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6594A7C-45DB-4B36-9E47-6FE1BB29B529}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F83972E-350B-4F5C-97AE-DDA438B88874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F83972E-350B-4F5C-97AE-DDA438B88874}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F83972E-350B-4F5C-97AE-DDA438B88874}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F83972E-350B-4F5C-97AE-DDA438B88874}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

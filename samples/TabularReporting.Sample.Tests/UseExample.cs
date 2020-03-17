@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using TabularReporting.Abstractions;
 using System.IO;
+using TabularReporting;
 
-namespace TabularReporting.Sample
+namespace TabularReporting.Sample.Tests
 {
     public class UseExample
     {
         /// <summary>
-        /// This method has been never run.
+        /// This code is for demo purpose
         /// </summary>
+        /// // [Fact]
         public void Show()
         {
             // 1. Prepare result
