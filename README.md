@@ -9,10 +9,10 @@ Extensible framework for creating tabular reports from any type.
 - `row` - An element of a `report`, contained by `column`. It must contain at least one `column`. It is never an `endpoint` of a `report`.
 - `column` - An element of a `report` (report is a `column`, not a `row`). It can contain either `row`s or an `endpoint`.
 - `endpoint` - An instance of **object**. It carries a useful information you want to put in a `report`.
-- `reporting` - The act of creating a `report` as **IColumn** from `source` using `query`ies.
+- `reporter` - Creates a `report` as **IColumn** from `source` using `query`ies.
 - `query` - The information about how to process a `source` to get `row`s or a `column`.
 - `interpreting` - The act of translating a report as **IColumn** to real-world data fields you extracted from `source` during `reporting`.
-- `branching` - change of path so that reporter iterates different object rather than **T** : IEnumerable\<T\>.
+- `branching` - change of path so that reporter` iterates different object.
 ### Decorator needed.
 The type **T** is expected to implement **IEnumerable\<T\>** which means that it may contain child elements of its type. In this way, the input source reflects the data hierarchy defined by columns and rows composition - a column can contain rows, which in turn contain columns.
 
