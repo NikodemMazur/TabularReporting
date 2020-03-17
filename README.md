@@ -137,7 +137,53 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 // etc...
 ```
 
-#### Output of **SimpleTextFormatter**
+`reportedColumn`:
+
+<Column>
+  <Row>
+    <Column>Date</Column>
+    <Column>17.03.2020</Column>
+  </Row>
+  <Row>
+    <Column>Tested by</Column>
+    <Column>Me</Column>
+  </Row>
+  <Row>
+    <Column>Final result</Column>
+    <Column>False</Column>
+  </Row>
+  <Row>
+    <Column>1</Column>
+    <Column>TestMethod0</Column>
+    <Column>2</Column>
+    <Column>True</Column>
+  </Row>
+  <Row>
+    <Column>3</Column>
+    <Column>TestMethod1</Column>
+    <Column>2</Column>
+    <Column>
+      <Row>
+        <Column>Subtest0</Column>
+        <Column>1</Column>
+        <Column>True</Column>
+      </Row>
+      <Row>
+        <Column>Subtest1</Column>
+        <Column>1</Column>
+        <Column>False</Column>
+      </Row>
+    </Column>
+  </Row>
+  <Row>
+    <Column>5</Column>
+    <Column>TestMethod3</Column>
+    <Column>2</Column>
+    <Column>True</Column>
+  </Row>
+</Column>
+
+`formattedReport`:
 
 ```none
 +--------------------------------------------+
