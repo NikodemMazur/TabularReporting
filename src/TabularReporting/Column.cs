@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TabularReporting.Abstractions;
+using MoreLinq;
 
 namespace TabularReporting
 {
@@ -45,7 +46,7 @@ namespace TabularReporting
             }
         }
 
-        IEnumerable<T> ProcessEndPointsCore<T>(Func<IColumnLocation, object, T> func, IColumnLocation currentLoc)
+        IEnumerable<T> ProcessEndpointsCore<T>(Func<IColumnLocation, object, T> func, IColumnLocation currentLoc)
         {
             return _content.Extract(f, g);
 
@@ -61,7 +62,7 @@ namespace TabularReporting
                     var colCount = colArray.Length;
 
                     for (int j = 0; j < colCount; j++)
-                        results.AddRange(colArray[j].ProcessEndPointsCore(func, currentLoc.Nest(i, j)));
+                        results.AddRange(colArray[j].ProcessEndpointsCore(func, currentLoc.Nest(i, j)));
                 }
 
                 return results;
@@ -70,7 +71,7 @@ namespace TabularReporting
             IEnumerable<T> g(object obj) => new[] { func(currentLoc, obj) };
         }
 
-        public IEnumerable<T> ProcessEndpoints<T>(Func<IColumnLocation, object, T> func) => ProcessEndPointsCore(func, ColumnLocation.Root);
+        public IEnumerable<T> ProcessEndpoints<T>(Func<IColumnLocation, object, T> func) => ProcessEndpointsCore(func, ColumnLocation.Root);
 
         IEnumerable<T> ProcessCore<T>(Func<IColumnLocation, IColumn, T> func, IColumnLocation currentLoc)
         {
@@ -184,5 +185,51 @@ namespace TabularReporting
 
         public void ActOnRows(Action<IRowLocation, IRow> action) =>
             ActOnRowsCore(action, ColumnLocation.Root);
+
+        public object GetEndpoint(IColumnLocation columnLocation)
+        {
+            return GetEndpointCore(columnLocation, this);
+        }
+
+        object GetEndpointCore(IColumnLocation columnLocation, IColumn currentCol)
+        {
+            return currentCol.Content.Extract(f, g);
+
+            object f(IEnumerable<IRow> rows)
+            {
+                if (columnLocation.RowNesting.Count() == 0)
+                    throw new ArgumentException("Nestings don't navigate to an endpoint.");
+
+                var rowIndex = columnLocation.RowNesting.First();
+                var colIndex = columnLocation.ColumnNesting.First();
+
+                var rowArray = rows.Select(r => new Row(r)).ToArray();
+                var rowCount = rowArray.Count();
+
+                if (rowIndex >= rowCount)
+                    throw new ArgumentException($"Row index out of range; Pair: [{rowIndex}, {colIndex}].");
+
+                var colArray = rowArray[rowIndex].Columns.ToArray();
+                var colCount = colArray.Count();
+
+                if (colIndex >= colCount)
+                    throw new ArgumentException($"Column index out of range; Pair: [{rowIndex}, {colIndex}].");
+
+                int currNestingSize = columnLocation.RowNesting.Count();
+                return GetEndpointCore(new ColumnLocation(
+                    columnLocation.RowNesting.TakeLast(currNestingSize - 1).ToArray(),
+                    columnLocation.ColumnNesting.TakeLast(currNestingSize - 1).ToArray()),
+                    colArray[colIndex]);
+            }
+
+            object g(object obj)
+            {
+                if (columnLocation.RowNesting.Count() != 0)
+                    throw new ArgumentOutOfRangeException("Row and column nesting out of range.");
+                return obj;
+            }
+        }
+
+        public object this[IColumnLocation columnLocation] => GetEndpoint(columnLocation);
     }
 }

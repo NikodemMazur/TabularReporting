@@ -90,5 +90,13 @@ namespace TabularReporting.Tests
             _column.Act((cl, col) =>
                 Assert.True(col.Content.Extract(rows => true, obj => Regex.Match(obj as string, $"Endpoint {i++}").Success)));
         }
+
+        [Fact]
+        public void GetsEndpointViaIndexer()
+        {
+            string actual = _column[ColumnLocation.Root.Nest(0, 3).Nest(0, 1)].ToString();
+
+            Assert.Equal("Endpoint 4", actual);
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace TabularReporting.Abstractions
         void Act(Action<IColumnLocation, IColumn> action);
         IEnumerable<T> ProcessRows<T>(Func<IRowLocation, IRow, T> func);
         void ActOnRows(Action<IRowLocation, IRow> action);
+        object this[IColumnLocation columnLocation] { get; }
     }
 }
