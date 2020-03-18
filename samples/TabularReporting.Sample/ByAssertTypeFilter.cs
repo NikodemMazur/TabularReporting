@@ -4,7 +4,7 @@ using TabularReporting.Abstractions;
 
 namespace TabularReporting.Sample
 {
-    public class ByAssertTypeFilter : ISourcedRowQuery<EnumerableTestResult>
+    public class ByAssertTypeFilter : ISourcedRowQuery<TestResult>
     {
         readonly string _assertType;
         readonly IEnumerable<IColumnQuery> _colQueries;
@@ -17,7 +17,7 @@ namespace TabularReporting.Sample
         public ByAssertTypeFilter(string assertType, params IColumnQuery[] colQueries)
             : this(assertType, colQueries.AsEnumerable()) { }
 
-        public EnumerableTestResult Source { get; set; }
+        public TestResult Source { get; set; }
 
         public bool Predicate => Source.AssertType == _assertType;
 

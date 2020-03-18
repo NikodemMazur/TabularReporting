@@ -125,19 +125,6 @@ namespace TabularReporting.Tests
             return mock;
         }
 
-
-        [Fact]
-        public void ProjectsNumToColumn()
-        {
-            string expected = "7";
-            FakeType source = new FakeType(7);
-            var mockColQuery = MockSrcColQueryRetNum();
-
-            var actual = new Reporter<FakeType>().Report(source, mockColQuery.Object).Content.Extract(rq => null, obj => obj.ToString());
-
-            Assert.Equal(expected, actual);
-        }
-
         [Fact]
         public void CreatesReportOfThreeTestStepTypes()
         {
@@ -157,46 +144,46 @@ namespace TabularReporting.Tests
             var rowQueryPassFailStep = MockSrcRowQueryFiltByStepType("PassFailTest", new[] { colQueryPassFail, colQueryUnit }).Object;
 
             // Column from Measurement[] Property
-            var colQueryMeasurement = new ColumnQueryWithRows(new[] { MockSrcRowQueryAllRows(new[] { colQueryNumeric,
+            var colQueryMeasurement = new ColumnWithRowsQuery(new[] { MockSrcRowQueryAllRows(new[] { colQueryNumeric,
                 colQueryUnit }).Object });
 
             // MultiNumericTest rows
             var rowQueryMultiNumericStep = MockSrcRowQueryFiltByStepType("MultiNumericTest", new[] { colQueryMeasurement }).Object;
 
             // Body description
-            var rowBodyDesc = new OneTimeRowQuery(new[] { new ColumnQueryWithStr("Value"),
-                new ColumnQueryWithStr("Unit")});
+            var rowBodyDesc = new OneTimeRowQuery(new[] { new ColumnWithStrQuery("Value"),
+                new ColumnWithStrQuery("Unit")});
 
             // Body
-            var colQueryBody = new ColumnQueryWithRows(new IRowQuery[] { rowBodyDesc,
+            var colQueryBody = new ColumnWithRowsQuery(new IRowQuery[] { rowBodyDesc,
                                                                          rowQueryNumericStep,
                                                                          rowQueryPassFailStep,
                                                                          rowQueryMultiNumericStep});
 
             // Header field name 0
-            var colQueryStation = new ColumnQueryWithStr("Test station");
+            var colQueryStation = new ColumnWithStrQuery("Test station");
 
             // Header field value 0
-            var colQueryStationValue = new ColumnQueryWithStr("Universal Test Station no 5.");
+            var colQueryStationValue = new ColumnWithStrQuery("Universal Test Station no 5.");
 
             // Header field name 1
-            var colQuerySerialNumber = new ColumnQueryWithStr("Serial number");
+            var colQuerySerialNumber = new ColumnWithStrQuery("Serial number");
 
             // Header field value 1
-            var colQuerySerialNumberValue = new ColumnQueryWithStr("XYZ123");
+            var colQuerySerialNumberValue = new ColumnWithStrQuery("XYZ123");
 
             // Header
             var colQueryHeader =
-                new ColumnQueryWithRows(new[] {new OneTimeRowQuery(new[] { colQueryStation,
+                new ColumnWithRowsQuery(new[] {new OneTimeRowQuery(new[] { colQueryStation,
                                                                            colQueryStationValue }),
                                                new OneTimeRowQuery(new[] { colQuerySerialNumber,
                                                colQuerySerialNumberValue }) });
 
             // Report
-            var colQueryReport = new ColumnQueryWithRows(new[] { new OneTimeRowQuery(new[] { colQueryHeader }),
-                                                                 new OneTimeRowQuery(new[] { colQueryBody }) });
+            var reportQueries = new[] { new OneTimeRowQuery(new[] { colQueryHeader }),
+                                        new OneTimeRowQuery(new[] { colQueryBody }) };
 
-            XNode colXmlNode = new Reporter<FakeType>().Report(_type, colQueryReport).ToXml();
+            XNode colXmlNode = new Reporter<FakeType>().Report(_type, reportQueries).ToXml();
             string actualXmlStr = colXmlNode.ToString();
 
             Assert.Equal(ExpectedTestResults.ExpectedReportAsXml, actualXmlStr);

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace TabularReporting
 {
-    public class ColumnQueryWithStr : IColumnQuery
+    public class ColumnWithStrQuery : IColumnQuery
     {
         readonly string _str;
 
-        public ColumnQueryWithStr(string str)
+        public ColumnWithStrQuery(string str)
         {
             _str = str ?? throw new ArgumentNullException(nameof(str));
         }

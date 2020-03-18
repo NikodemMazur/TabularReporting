@@ -18,7 +18,7 @@ namespace TabularReporting.TestStand
         }
 
         public IColumn Report(PropertyObject source, IEnumerable<IRowQuery> reportRowQueries) =>
-            _reporter.Report(new EnumerablePropertyObject(source), new ColumnQueryWithRows(reportRowQueries));
+            _reporter.Report(new EnumerablePropertyObject(source), reportRowQueries);
 
         public IColumn Report(PropertyObject source, params IRowQuery[] reportRowQueries) =>
             Report(source, reportRowQueries.AsEnumerable());

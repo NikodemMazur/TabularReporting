@@ -1,7 +1,9 @@
-﻿namespace TabularReporting.Abstractions
+﻿using System.Collections.Generic;
+
+namespace TabularReporting.Abstractions
 {
     public interface IReporter<T>
     {
-        IColumn Report(T source, IColumnQuery reportQuery);
+        IColumn Report(IEnumerable<T> sources, IEnumerable<IRowQuery> reportQueries);
     }
 }

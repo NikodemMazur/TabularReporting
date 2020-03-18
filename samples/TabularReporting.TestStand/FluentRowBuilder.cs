@@ -61,7 +61,7 @@ namespace TabularReporting.TestStand
         /// <returns></returns>
         public FluentRowBuilder AddColWithRows(params IRowQuery[] rowQueries)
         {
-            var col = new ColumnQueryWithRows(rowQueries);
+            var col = new ColumnWithRowsQuery(rowQueries);
             _colQueries.Add(col);
             return this;
         }
@@ -73,7 +73,7 @@ namespace TabularReporting.TestStand
         /// <returns></returns>
         public FluentRowBuilder AddColWithStr(string str)
         {
-            var col = new ColumnQueryWithStr(str);
+            var col = new ColumnWithStrQuery(str);
             _colQueries.Add(col);
             return this;
         }
@@ -123,7 +123,7 @@ namespace TabularReporting.TestStand
         /// <returns></returns>
         public FluentRowBuilder AddColWithRowsFromPropertyObject(string lookupString, params IRowQuery[] rowQueries)
         {
-            var col = new ColumnQueryWithRowsBranched<EnumerablePropertyObject>(epo =>
+            var col = new ColumnWithRowsBranchedQuery<EnumerablePropertyObject>(epo =>
                 new EnumerablePropertyObject(epo.GetPropertyObject(lookupString, 0x0)), rowQueries);
             _colQueries.Add(col);
             return this;

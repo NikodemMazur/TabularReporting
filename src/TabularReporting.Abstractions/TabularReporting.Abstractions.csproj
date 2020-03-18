@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBranchingSourcedColumnQuery.cs" />
     <Compile Include="IColumn.cs" />
     <Compile Include="IColumnLocation.cs" />
     <Compile Include="IColumnQuery.cs" />

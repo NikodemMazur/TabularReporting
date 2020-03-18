@@ -13,6 +13,8 @@ namespace TabularReporting
         private Union2() { }
         public abstract T Extract<T>(Func<A, T> f, Func<B, T> g);
         public abstract void Act(Action<A> f, Action<B> g);
+        public override string ToString() =>
+            Extract(a => a.ToString(), b => b.ToString());
 
         public sealed class Case1 : Union2<A, B>
         {

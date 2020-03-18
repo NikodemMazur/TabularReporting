@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByAssertTypeFilter.cs" />
-    <Compile Include="EnumerableTestResult.cs" />
     <Compile Include="ExecTimeInSecondsGetter.cs" />
     <Compile Include="NameGetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

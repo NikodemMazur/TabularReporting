@@ -12,60 +12,11 @@ Extensible framework for creating tabular reports from any type.
 - `reporter` - Creates a `report` as **IColumn** from `source` using `query`ies.
 - `query` - The information about how to process a `source` to get `row`s or a `column`.
 - `interpreting` - The act of translating a report as **IColumn** to real-world data fields you extracted from `source` during `reporting`.
-- `branching` - change of path so that reporter` iterates different object.
-### Decorator needed.
-The type **T** is expected to implement **IEnumerable\<T\>** which means that it may contain child elements of its type. In this way, the input source reflects the data hierarchy defined by columns and rows composition - a column can contain rows, which in turn contain columns.
-
-#### Type
-
-```csharp
-public class TestResult
-{
-    public string TestName { get; set; }
-    public TimeSpan ExecutionTime { get; set; }
-    public bool Result { get; set; }
-    public string AssertType { get; set; }
-    public IEnumerable<TestResult> InnerTests { get; set; }
-
-    public TestResult(string testName, TimeSpan executionTime,
-        bool result, string assertType, IEnumerable<TestResult> innerTests)
-    {
-        // ...
-    }
-
-    // ...
-}
-```
-#### Decorator
-
-```csharp
-public class EnumerableTestResult : TestResult, IEnumerable<EnumerableTestResult>
-{
-    readonly TestResult _testResult;
-
-    // Ctor accepting object to decorate
-    public EnumerableTestResult(TestResult testResult) 
-        : base(testResult.TestName, testResult.ExecutionTime, testResult.Result, testResult.AssertType, testResult.InnerTests)
-    {
-        _testResult = testResult;
-    }
-
-    // The only job you have to do
-    public IEnumerator<EnumerableTestResult> GetEnumerator()
-    {
-        foreach (TestResult it in _testResult.InnerTests)
-            yield return new EnumerableTestResult(it);
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-}
-```
+- `branching` - Continuing the `reporter` projection in a recursive manner.
 
 ### Example
 
+Following code snippet shows
 #### Report --> Format --> Write
 
 ```csharp
