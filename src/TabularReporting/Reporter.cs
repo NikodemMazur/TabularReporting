@@ -47,20 +47,26 @@ namespace TabularReporting
                 {
 
                     IRow row;
-                    
+
                     if (rowQuery is ISourcedRowQuery<T> sourcedRowQuery)
                     {
                         sourcedRowQuery.Source = source_; // If the type implements ISourcedXXXQuery, you must specify the source first.
                         // Compound new row recursively. Take source from sourced row query to allow for branching.
                         if (rowQuery.Predicate)
+                        {
                             row = new Row(rowQuery.ColumnQueries.Select(cq => ProjectToColumn(sourcedRowQuery.Source, cq)).ToArray());
+                            rowList_.Add(row);
+                        }
                     }
-                    if (rowQuery.Predicate)
+                    else
                     {
-                        // Compound new row recursively.
-                        row = new Row(rowQuery.ColumnQueries.Select(cq => ProjectToColumn(source_, cq)).ToArray());
-                        // Append the row.
-                        rowList_.Add(row);
+                        if (rowQuery.Predicate)
+                        {
+                            // Compound new row recursively.
+                            row = new Row(rowQuery.ColumnQueries.Select(cq => ProjectToColumn(source_, cq)).ToArray());
+                            // Append the row.
+                            rowList_.Add(row);
+                        }
                     }
                 }
                 return rowList_;
