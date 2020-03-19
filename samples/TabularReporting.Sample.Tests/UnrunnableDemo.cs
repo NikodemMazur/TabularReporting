@@ -49,7 +49,7 @@ namespace TabularReporting.Sample.Tests
                         new NameGetter(),
                         new ExecTimeInSecondsGetter(),
                         new ColumnWithRowsBranchedQuery<TestResult>(tr => tr.InnerTests,
-                            new EveryRowQuery<TestResult>(
+                            new EveryRowQuery(
                                 new NameGetter(),
                                 new ExecTimeInSecondsGetter(),
                                 new ResultGetter()))

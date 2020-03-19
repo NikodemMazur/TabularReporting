@@ -166,7 +166,7 @@ namespace TabularReporting.TestStand
         /// <returns></returns>
         public IRowQuery BuildEveryRow()
         {
-            return new EveryRowQuery<EnumerablePropertyObject>(_colQueries.ToArray());
+            return new EveryRowQuery(_colQueries.ToArray());
         }
     }
 }
