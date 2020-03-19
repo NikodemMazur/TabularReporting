@@ -13,6 +13,8 @@ namespace TabularReporting.TestStand
         List<IColumnQuery> _colQueries;
         static readonly IDictionary<string, IColumnQuery> _countersDict = new Dictionary<string, IColumnQuery>();
         static readonly object _countersDictPadLock = new object();
+        static readonly IDictionary<string, IColumnQuery> _diffsDict = new Dictionary<string, IColumnQuery>();
+        static readonly object _diffsDictPadLock = new object();
 
         // Hide ctor from users.
         protected FluentRowBuilder() => _colQueries = new List<IColumnQuery>();
@@ -79,7 +81,7 @@ namespace TabularReporting.TestStand
         }
 
         /// <summary>
-        /// Adds column with memory which increments returned value at each use.
+        /// Adds mutable column with memory which increments returned value at each use.
         /// </summary>
         /// <param name="counterName">ID of counter.</param>
         /// <param name="countFromOne">When true this column counts from one instead of zero.</param>
@@ -102,16 +104,26 @@ namespace TabularReporting.TestStand
         }
 
         /// <summary>
-        /// Adds column which calculates difference between numeric property object, the <paramref name="lookupString"/> points to.
+        /// Adds mutable column which calculates difference between numeric property object, the <paramref name="lookupString"/> points to.
         /// </summary>
         /// <param name="initialValue">Initial register value.</param>
         /// <param name="lookupString">TestStand lookup string to numeric property object.</param>
+        /// <param name="differName">ID of differ.</param>
         /// <param name="format">CSharp standard numeric format string.</param>
         /// <returns></returns>
-        public FluentRowBuilder AddColNumericDiff(double initialValue, string lookupString, string format = "F3")
+        public FluentRowBuilder AddColNumericDiff(double initialValue, string lookupString, string differName = "", string format = "F3")
         {
-            var col = new NumericDiff(initialValue, lookupString, format);
-            _colQueries.Add(col);
+            lock (_diffsDictPadLock)
+            {
+                if (_diffsDict.TryGetValue(differName, out IColumnQuery value))
+                    _colQueries.Add(value);
+                else
+                {
+                    var col = new NumericDiff(initialValue, lookupString, format);
+                    _colQueries.Add(col);
+                    _diffsDict[differName] = col;
+                }
+            }
             return this;
         }
 

@@ -13,7 +13,7 @@ namespace TabularReporting.Tests
 
         public ColumnFixture()
         {
-            _expectedEndPoints = new object[] { "Endpoint 0", "Endpoint 1", "Endpoint 2", "Endpoint 3", "Endpoint 4" };
+            _expectedEndPoints = new object[] { "Endpoint 0", "Endpoint 1", "Endpoint 2", "Endpoint 3", "Endpoint 4", "Endpoint 5" };
             _column = new Column(
                 new Row(
                     new Column(_expectedEndPoints[0]),
@@ -21,7 +21,9 @@ namespace TabularReporting.Tests
                     new Column(_expectedEndPoints[2]),
                     new Column(new Row(
                         new Column(_expectedEndPoints[3]),
-                        new Column(_expectedEndPoints[4])))));
+                        new Column(_expectedEndPoints[4])))),
+                new Row(
+                    new Column(_expectedEndPoints[5])));
         }
 
         [Fact]
@@ -42,7 +44,8 @@ namespace TabularReporting.Tests
                 { new[] { 1 }, 10 },
                 { new[] { 2 }, 10 },
                 { new[] { 3, 0 }, 10 },
-                { new[] { 3, 1 }, 10 }
+                { new[] { 3, 1 }, 10 },
+                { new[] { 0 }, 10 }
             };
 
             Assert.Equal(expected.Keys,
@@ -64,7 +67,8 @@ namespace TabularReporting.Tests
                 ColumnLocation.Root.Nest(0, 2),
                 ColumnLocation.Root.Nest(0, 3),
                 ColumnLocation.Root.Nest(0, 3).Nest(0, 0),
-                ColumnLocation.Root.Nest(0, 3).Nest(0, 1)
+                ColumnLocation.Root.Nest(0, 3).Nest(0, 1),
+                ColumnLocation.Root.Nest(1, 0)
             };
 
             Assert.Equal(expected, actual);
@@ -77,7 +81,8 @@ namespace TabularReporting.Tests
             var expected = new[]
             {
                 ColumnLocation.Root.NestOpen(0),
-                ColumnLocation.Root.Nest(0, 3).NestOpen(0)
+                ColumnLocation.Root.Nest(0, 3).NestOpen(0),
+                ColumnLocation.Root.NestOpen(1)
             };
 
             Assert.Equal(expected, actual);
@@ -96,7 +101,16 @@ namespace TabularReporting.Tests
         {
             string actual = _column[ColumnLocation.Root.Nest(0, 3).Nest(0, 1)].ToString();
 
-            Assert.Equal("Endpoint 4", actual);
+            Assert.Equal(_expectedEndPoints[4], actual);
+        }
+
+        [Fact]
+        public void GetsLastRow()
+        {
+            IRow actualRow = _column.GetRow(ColumnLocation.Root.NestOpen(1));
+            string actualStr = actualRow.Columns.First().Content.Extract(rows => null, obj => obj.ToString());
+
+            Assert.Equal(_expectedEndPoints[5], actualStr);
         }
     }
 }

@@ -230,6 +230,51 @@ namespace TabularReporting
             }
         }
 
+        /// <summary>
+        /// Indexer works like <see cref="GetEndpoint(IColumnLocation)"/>.
+        /// </summary>
+        /// <param name="columnLocation">Location pointing to an endpoint.</param>
+        /// <returns></returns>
         public object this[IColumnLocation columnLocation] => GetEndpoint(columnLocation);
+
+        IRow GetRowCore(IRowLocation rowLocation, IColumn currentCol)
+        {
+            return currentCol.Content.Extract(f, g);
+
+            IRow f(IEnumerable<IRow> rows)
+            {
+                var rowIndex = rowLocation.RowNesting.First();
+                var rowArray = rows.Select(r => new Row(r)).ToArray();
+                var rowCount = rowArray.Count();
+                if (rowIndex >= rowCount)
+                    throw new ArgumentException($"Row index out of range.");
+
+                if (rowLocation.ColumnNesting.Count() != 0)
+                {
+                    var colIndex = rowLocation.ColumnNesting.First();
+                    var colArray = rowArray[rowIndex].Columns.ToArray();
+                    var colCount = colArray.Count();
+
+                    if (colIndex >= colCount)
+                        throw new ArgumentException($"Column index out of range.");
+
+                    int currNestingSize = rowLocation.RowNesting.Count();
+
+                    return GetRowCore(new RowLocation(
+                        rowLocation.RowNesting.TakeLast(currNestingSize - 1).ToArray(),
+                        rowLocation.ColumnNesting.TakeLast(currNestingSize - 1).ToArray()),
+                        colArray[colIndex]);
+                }
+                else
+                    return rowArray[rowIndex];
+            }
+
+            IRow g(object obj)
+            {
+                throw new ArgumentException("Column location points to an endpoint but it shouldn't if you want to get rows.");
+            }
+        }
+
+        public IRow GetRow(IRowLocation rowLocation) => GetRowCore(rowLocation, this);
     }
 }
