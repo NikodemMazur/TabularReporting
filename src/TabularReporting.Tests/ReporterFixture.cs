@@ -12,7 +12,7 @@ namespace TabularReporting.Tests
     // for convenience
     using ColQueryUnion = Union2<IEnumerable<IRowQuery>, object>;
 
-    public class FakeType : IEnumerable<FakeType>
+    public class FakeType
     {
         readonly IEnumerable<FakeType> _innerElements;
         readonly string _stepType;
@@ -28,6 +28,7 @@ namespace TabularReporting.Tests
 
         public FakeType(IEnumerable<FakeType> innerElements)
         {
+            _stepType = "Container";
             _innerElements = innerElements ?? throw new ArgumentNullException(nameof(innerElements));
         }
 
@@ -57,27 +58,18 @@ namespace TabularReporting.Tests
             }
             _innerElements = measList;
         }
-
-        public IEnumerator<FakeType> GetEnumerator()
-        {
-            return _innerElements.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
     }
 
     public class ReporterFixture
     {
-        readonly FakeType _type;
+        readonly IEnumerable<FakeType> _sources;
 
         public ReporterFixture()
         {
-            _type = new FakeType(new FakeType(false),
-                                 new FakeType(7),
-                                 new FakeType("A", 1, 2, 3));
+            _sources = 
+                new[] { new FakeType(false),
+                        new FakeType(7),
+                        new FakeType("A", 1, 2, 3) };
         }
 
         Mock<ISourcedColumnQuery<FakeType>> MockSrcColQueryRetNum()
@@ -116,15 +108,6 @@ namespace TabularReporting.Tests
             return mock;
         }
 
-        Mock<ISourcedRowQuery<FakeType>> MockSrcRowQueryAllRows(IColumnQuery[] columnQueries)
-        {
-            var mock = new Mock<ISourcedRowQuery<FakeType>>(MockBehavior.Strict);
-            mock.SetupAllProperties();
-            mock.Setup(scq => scq.Predicate).Returns(() => true);
-            mock.Setup(scq => scq.ColumnQueries).Returns(columnQueries);
-            return mock;
-        }
-
         [Fact]
         public void CreatesReportOfThreeTestStepTypes()
         {
@@ -144,8 +127,8 @@ namespace TabularReporting.Tests
             var rowQueryPassFailStep = MockSrcRowQueryFiltByStepType("PassFailTest", new[] { colQueryPassFail, colQueryUnit }).Object;
 
             // Column from Measurement[] Property
-            var colQueryMeasurement = new ColumnWithRowsQuery(new[] { MockSrcRowQueryAllRows(new[] { colQueryNumeric,
-                colQueryUnit }).Object });
+            var colQueryMeasurement = new ColumnWithRowsBranchedQuery<FakeType>(ft => ft.InnerElements,
+                new EveryRowQuery(colQueryNumeric, colQueryUnit));
 
             // MultiNumericTest rows
             var rowQueryMultiNumericStep = MockSrcRowQueryFiltByStepType("MultiNumericTest", new[] { colQueryMeasurement }).Object;
@@ -155,10 +138,11 @@ namespace TabularReporting.Tests
                 new ColumnWithStrQuery("Unit")});
 
             // Body
-            var colQueryBody = new ColumnWithRowsQuery(new IRowQuery[] { rowBodyDesc,
-                                                                         rowQueryNumericStep,
-                                                                         rowQueryPassFailStep,
-                                                                         rowQueryMultiNumericStep});
+            var colQueryBody = new ColumnWithRowsQuery(
+                    rowBodyDesc,
+                    rowQueryNumericStep,
+                    rowQueryPassFailStep,
+                    rowQueryMultiNumericStep);
 
             // Header field name 0
             var colQueryStation = new ColumnWithStrQuery("Test station");
@@ -174,16 +158,14 @@ namespace TabularReporting.Tests
 
             // Header
             var colQueryHeader =
-                new ColumnWithRowsQuery(new[] {new OneTimeRowQuery(new[] { colQueryStation,
-                                                                           colQueryStationValue }),
-                                               new OneTimeRowQuery(new[] { colQuerySerialNumber,
-                                               colQuerySerialNumberValue }) });
+                new ColumnWithRowsQuery(new OneTimeRowQuery(colQueryStation, colQueryStationValue),
+                                        new OneTimeRowQuery(colQuerySerialNumber, colQuerySerialNumberValue));
 
             // Report
-            var reportQueries = new[] { new OneTimeRowQuery(new[] { colQueryHeader }),
-                                        new OneTimeRowQuery(new[] { colQueryBody }) };
+            var reportQueries = new[] { new OneTimeRowQuery(colQueryHeader),
+                                        new OneTimeRowQuery(colQueryBody) };
 
-            XNode colXmlNode = new Reporter<FakeType>().Report(_type, reportQueries).ToXml();
+            XNode colXmlNode = new Reporter<FakeType>().Report(_sources, reportQueries).ToXml();
             string actualXmlStr = colXmlNode.ToString();
 
             Assert.Equal(ExpectedTestResults.ExpectedReportAsXml, actualXmlStr);
