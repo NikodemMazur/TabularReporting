@@ -15,8 +15,8 @@ namespace TabularReporting
         public EveryRowQuery() : this(Enumerable.Empty<IColumnQuery>()) { }
         public EveryRowQuery(params IColumnQuery[] colQueries) : this(colQueries.AsEnumerable()) { }
 
-        public bool Predicate => true;
+        bool IRowQuery.Predicate => true;
 
-        public IEnumerable<IColumnQuery> ColumnQueries => _colQueries;
+        IEnumerable<IColumnQuery> IRowQuery.ColumnQueries => _colQueries;
     }
 }
