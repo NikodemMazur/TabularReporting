@@ -189,9 +189,9 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 ```
 
 ### More practical example (TestStand)
-You can make `reports` from any type. For that, you just need to define `queries` which will extract information.
+You can create `reports` from any type as long as you have some `queries` which tell the `reporter` how to process that type.
 #### 1. Decorate **PropertyObject**
-
+Adapt the elementary TestStand type to .Net world.
 ```csharp
 public class EnumerablePropertyObject : PropertyObject, IEnumerable<EnumerablePropertyObject>
 {
@@ -225,9 +225,8 @@ public class EnumerablePropertyObject : PropertyObject, IEnumerable<EnumerablePr
     }
 }
 ```
-
-#### 2. Implement queries
-
+#### 2. Define queries
+Tell how to process **PropertyObject**.
 ```csharp
 internal class FormattedValueGetter : ISourcedColumnQuery<EnumerablePropertyObject>
 {
@@ -273,6 +272,12 @@ internal class NumericDiff : ISourcedColumnQuery<EnumerablePropertyObject>
             return new Union2<IEnumerable<IRowQuery>, object>.Case2(string.Format($"{{0:{_format}}}", diff));
         }
     }
+	
+	public NumericDiff Reset(double newInitialValue)
+    {
+        _register = newInitialValue;
+        return this;
+    }
 }
 
 internal class ByStepTypeFilter : ISourcedRowQuery<EnumerablePropertyObject>
@@ -294,9 +299,7 @@ internal class ByStepTypeFilter : ISourcedRowQuery<EnumerablePropertyObject>
         _source.GetValString("TS.StepType", PropertyOptions.PropOption_NoOptions) == _stepType;
 }
 ```
-
-#### 3. Define columns/rows and report
-
+#### 3. Use queries to define report
 Use **TabularReporting.TestStand.FluentRowBuilder** for convenient in-TestStand use.
 
 ```csharp
@@ -326,7 +329,9 @@ IRowQuery multipleNumericLimitTestRow =
                                             FluentRowBuilder.CreateRowBuilder().AddColWithFormattedValue("Data", "%.3f").BuildEveryRow())
                                        .AddColNumericDiff(mainSequenceResult.GetValNumber("TS.StartTime", 0x0), "TS.StartTime")
                                        .BuildRowByStepType("NI_MultipleNumericLimitTest");
-
+```
+#### 4. Make the report
+```csharp
 // 4. Report (the projection happens here).
 IColumn reportColumn = new Reporter().Report(mainSequenceResult, columnNamesRow, numericLimitTestRow, multipleNumericLimitTestRow);
 
@@ -335,8 +340,7 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
 
 // ...
 ```
-
-`reportColumn`:
+`reportColumn` (**IColumn**):
 ```xml
 <Column>
   <Row>
@@ -391,8 +395,7 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
   </Row>
 </Column>
 ```
-
-`reportStr`:
+`reportStr` (**string**):
 ```none
 +------------------------------------------------------------+
 ¦ No. ¦ Name                          ¦ Result       ¦ Time  ¦
