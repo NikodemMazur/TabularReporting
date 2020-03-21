@@ -4,16 +4,28 @@ Extensible framework for creating tabular reports from any type.
 ![What is it?](/images/what_is_it.png)
 ### Terminology
 - `source` - A type **T** implementing **IEnumerable\<T\>** from which you want to create a `report`.
-- `report` - Composition of `row`s and `column`s.
+- `report` - Composition of `rows` and `columns`.
 - `row` - An element of a `report`, contained by `column`. It must contain at least one `column`. It is never an `endpoint` of a `report`.
-- `column` - An element of a `report` (report is a `column`, not a `row`). It can contain either `row`s or an `endpoint`.
+- `column` - An element of a `report` (report is a `column`, not a `row`). It can contain either `rows` or an `endpoint`.
 - `endpoint` - An instance of **object**. It carries a useful information you want to put in a `report`.
-- `reporter` - Creates a `report` as **IColumn** from `source` using `query`ies.
-- `query` - The information about how to process a `source` to get `row`s or a `column`.
+- `reporter` - Creates a `report` as **IColumn** from `source` using `queries`.
+- `query` - The information about how to process a `source` to get `rows` or a `column`.
 - `interpreting` - The act of translating a report as **IColumn** to real-world data fields you extracted from `source` during `reporting`.
 - `branching` - Continuing the `reporter` projection in a recursive manner.
 ### Example
+The **TestResult** reporting procedure is as follows:
+1. Get instances from which you want to create a `report`.
+2. Tell what your `report` should look like using `queries`.
+3. Fire `reporter` as **IReporter** which does the projection.
+4. Format the obtained xml-like `report` as **IColumn** using your **IFormatter** or the ready one **SimpleTextFormatter** (shipped with this framework).
+   Then, the result is **System.string**, **System.IO.TextWriter** or any other class you have chosen to represent your in-memory `report`.
+5. Save your `report` to disk.
 
+Optionally:
+
+6. Read your `report` back.
+7. Parse your `report` back to **IColumn**.
+8. Interpret **IColumn** - translate its `rows` and `columns` to desired data types.
 #### Type
 Let's introduce an example type that roughly corresponds to the unit test results tree in some IDE.
 ```csharp
