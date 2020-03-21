@@ -10,7 +10,7 @@ Extensible framework for creating tabular reports from any type.
 - `endpoint` - An instance of **object**. It carries a useful information you want to put in a `report`.
 - `reporter` - Creates a `report` as **IColumn** from `source` using `queries`.
 - `query` - The information about how to process a `source` to get `rows` or a `column`.
-- `interpreting` - The act of translating a report as **IColumn** to real-world data fields you extracted from `source` during `reporting`.
+- `interpreting` - The act of translating a report as **IColumn** to real-world data fields you extracted from `source`.
 - `branching` - Continuing the `reporter` projection in a recursive manner.
 ### Example
 The **TestResult** reporting procedure is as follows:
