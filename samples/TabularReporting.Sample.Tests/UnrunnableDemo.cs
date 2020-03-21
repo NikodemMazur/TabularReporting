@@ -74,7 +74,7 @@ namespace TabularReporting.Sample.Tests
             IColumn parsedColumn = new SimpleTextParser().Parse(readReport);
 
             // 8. Interpret
-            string finalResult = reportedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
+            string finalResult = parsedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
             // etc...
         }
     }
