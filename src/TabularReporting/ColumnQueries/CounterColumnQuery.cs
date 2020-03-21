@@ -16,5 +16,10 @@ namespace TabularReporting
 
         Union2<IEnumerable<IRowQuery>, object> IColumnQuery.Content =>
             new Union2<IEnumerable<IRowQuery>, object>.Case2(string.Format($"{{0:{_format}}}", _counter++));
+
+        public void Reset()
+        {
+            _counter = 0;
+        }
     }
 }

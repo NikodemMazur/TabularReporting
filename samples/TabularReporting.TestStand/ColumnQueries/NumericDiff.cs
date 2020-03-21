@@ -42,5 +42,10 @@ namespace TabularReporting.TestStand
                 return new Union2<IEnumerable<IRowQuery>, object>.Case2(string.Format($"{{0:{_format}}}", diff));
             }
         }
+
+        public void Reset(double newInitialValue)
+        {
+            _register = newInitialValue;
+        }
     }
 }
