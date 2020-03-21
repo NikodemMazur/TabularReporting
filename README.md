@@ -120,7 +120,7 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 // etc...
 ```
 
-`reportedColumn`:
+`reportedColumn` (**IColumn**):
 
 ```xml
 <Column>
@@ -168,7 +168,7 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 </Column>
 ```
 
-`formattedReport`:
+`formattedReport` (string):
 
 ```none
 +--------------------------------------------+
