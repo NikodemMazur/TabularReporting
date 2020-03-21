@@ -1,10 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using TabularReporting.Abstractions;
-using System.IO;
 using Xunit;
-using TabularReporting;
 
 namespace TabularReporting.Sample.Tests
 {
