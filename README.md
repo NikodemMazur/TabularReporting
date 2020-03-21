@@ -191,7 +191,7 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 ### More practical example (TestStand)
 You can create `reports` from any type as long as you have some `queries` which tell the `reporter` how to process that type.
 #### 1. Decorate **PropertyObject**
-Adapt the elementary TestStand type to .Net world.
+Adapt the elementary TestStand type to .NET world.
 ```csharp
 public class EnumerablePropertyObject : PropertyObject, IEnumerable<EnumerablePropertyObject>
 {
@@ -350,13 +350,13 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
     <Column>Time</Column>
   </Row>
   <Row>
-    <Column>31</Column>
+    <Column>0</Column>
     <Column>Numeric Limit Test 0</Column>
     <Column>Value: 2.500</Column>
-    <Column>0.000</Column>
+    <Column>0.064</Column>
   </Row>
   <Row>
-    <Column>33</Column>
+    <Column>1</Column>
     <Column>Multiple Numeric Limit Test 0</Column>
     <Column>
       <Row>
@@ -366,22 +366,22 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
         <Column>7.000</Column>
       </Row>
     </Column>
-    <Column>0.000</Column>
+    <Column>0.006</Column>
   </Row>
   <Row>
-    <Column>35</Column>
+    <Column>2</Column>
     <Column>Numeric Limit Test 1</Column>
     <Column>Value: 2.700</Column>
-    <Column>0.000</Column>
+    <Column>0.004</Column>
   </Row>
   <Row>
-    <Column>37</Column>
+    <Column>3</Column>
     <Column>Numeric Limit Test 2</Column>
     <Column>Value: 1.000</Column>
-    <Column>0.000</Column>
+    <Column>1.006</Column>
   </Row>
   <Row>
-    <Column>39</Column>
+    <Column>4</Column>
     <Column>Multiple Numeric Limit Test 1</Column>
     <Column>
       <Row>
@@ -391,7 +391,7 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
         <Column>1.000</Column>
       </Row>
     </Column>
-    <Column>0.000</Column>
+    <Column>0.005</Column>
   </Row>
 </Column>
 ```
@@ -400,17 +400,17 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
 +------------------------------------------------------------+
 ¦ No. ¦ Name                          ¦ Result       ¦ Time  ¦
 ¦-----+-------------------------------+--------------+-------¦
-¦ 31  ¦ Numeric Limit Test 0          ¦ Value: 2.500 ¦ 0.000 ¦
+¦ 0   ¦ Numeric Limit Test 0          ¦ Value: 2.500 ¦ 0.064 ¦
 ¦-----+-------------------------------+--------------+-------¦
-¦ 33  ¦ Multiple Numeric Limit Test 0 ¦ 0.000        ¦ 0.000 ¦
+¦ 1   ¦ Multiple Numeric Limit Test 0 ¦ 0.000        ¦ 0.006 ¦
 ¦     ¦                               ¦--------------¦       ¦
 ¦     ¦                               ¦ 7.000        ¦       ¦
 ¦-----+-------------------------------+--------------+-------¦
-¦ 35  ¦ Numeric Limit Test 1          ¦ Value: 2.700 ¦ 0.000 ¦
+¦ 2   ¦ Numeric Limit Test 1          ¦ Value: 2.700 ¦ 0.004 ¦
 ¦-----+-------------------------------+--------------+-------¦
-¦ 37  ¦ Numeric Limit Test 2          ¦ Value: 1.000 ¦ 0.000 ¦
+¦ 3   ¦ Numeric Limit Test 2          ¦ Value: 1.000 ¦ 1.006 ¦
 ¦-----+-------------------------------+--------------+-------¦
-¦ 39  ¦ Multiple Numeric Limit Test 1 ¦ 7.000        ¦ 0.000 ¦
+¦ 4   ¦ Multiple Numeric Limit Test 1 ¦ 7.000        ¦ 0.005 ¦
 ¦     ¦                               ¦--------------¦       ¦
 ¦     ¦                               ¦ 1.000        ¦       ¦
 +------------------------------------------------------------+
@@ -419,3 +419,28 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
 - Implement **SimpleTextParser**.
 - Include call chain in `reporter` exceptions to make them more readable and thus facilitate composing the `report` `query`.
 - Consider introducing bidirectional `queries` to support `interpreting`.
+### License
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+MIT License
+
+Copyright (c) 2020 FriedBaconAndEggs
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+```none
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
