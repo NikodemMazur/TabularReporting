@@ -1,8 +1,6 @@
 ### What is it?
 Extensible framework for creating tabular reports from any type.
-
 ![What is it?](/images/what_is_it.png)
-
 ### Terminology
 - `source` - A type **T** implementing **IEnumerable\<T\>** from which you want to create a `report`.
 - `report` - Composition of `row`s and `column`s.
@@ -13,56 +11,81 @@ Extensible framework for creating tabular reports from any type.
 - `query` - The information about how to process a `source` to get `row`s or a `column`.
 - `interpreting` - The act of translating a report as **IColumn** to real-world data fields you extracted from `source` during `reporting`.
 - `branching` - Continuing the `reporter` projection in a recursive manner.
-
-### Example
-
-Following code snippet shows
-#### Report --> Format --> Write
-
+### Decorator needed.
+The type **T** is expected to implement **IEnumerable\<T\>** which means that it may contain child elements of its type. In this way, the input source reflects the data hierarchy defined by columns and rows composition - a column can contain rows, which in turn contain columns.
+#### Type
+Let's introduce an example type that roughly corresponds to the unit test results tree in some IDE.
 ```csharp
+public class TestResult
+{
+    public string TestName { get; set; }
+    public TimeSpan ExecutionTime { get; set; }
+    public bool Result { get; set; }
+    public string AssertType { get; set; }
+    public IEnumerable<TestResult> InnerTests { get; set; }
+
+    public TestResult(string testName, TimeSpan executionTime,
+        bool result, string assertType, IEnumerable<TestResult> innerTests)
+    {
+        // ...
+    }
+
+    // ...
+}
+```
+### Example
+#### Report --> Format --> Write
+```csharp
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using TabularReporting.Abstractions;
+
+// ...
+
 // 1. Prepare result
-TestResult result =
-    new TestResult("TestOfThings", TimeSpan.FromSeconds(10), false, null,
+IEnumerable<TestResult> result = new[] {
         new TestResult("TestMethod0", TimeSpan.FromSeconds(2), true, "Equal", null),
         new TestResult("TestMethod1", TimeSpan.FromSeconds(2), false, "MultiTrue",
             new TestResult("Subtest0", TimeSpan.FromSeconds(1), true, "True", null),
             new TestResult("Subtest1", TimeSpan.FromSeconds(1), false, "True", null)),
         new TestResult("TestMethod2", TimeSpan.FromSeconds(2), true, "Contains", null),
         new TestResult("TestMethod3", TimeSpan.FromSeconds(2), true, "Equal", null),
-        new TestResult("TestMethod4", TimeSpan.FromSeconds(2), true, "Empty", null));
+        new TestResult("TestMethod4", TimeSpan.FromSeconds(2), true, "Empty", null) };
 
 // 2. Define column (report) query
 IColumnQuery counterColQuery = new CounterColumnQuery(); // Mutable class - it's an ordinal column
-IColumnQuery reportQuery =
-    new ColumnQueryWithRows(
+IEnumerable<IRowQuery> reportQueries = new IRowQuery[] {
         new OneTimeRowQuery( // 2a. Define first header row
-            new ColumnQueryWithStr("Date"),
-            new ColumnQueryWithStr(DateTime.Now.ToShortDateString())),
+            new ColumnWithStrQuery("Date"),
+            new ColumnWithStrQuery(DateTime.Now.ToShortDateString())),
         new OneTimeRowQuery( // 2b. Define second header row
-            new ColumnQueryWithStr("Tested by"),
-            new ColumnQueryWithStr("Me")),
+            new ColumnWithStrQuery("Tested by"),
+            new ColumnWithStrQuery("Me")),
         new OneTimeRowQuery( // 2c. Define third header row
-            new ColumnQueryWithStr("Final result"), 
-            new ColumnQueryWithStr(result.Result.ToString())),
+            new ColumnWithStrQuery("Final result"),
+            new ColumnWithStrQuery(result.All(tr => tr.Result) ? "Passed" : "Failed")),
         // 2c. Define body
-        new ByAssertTypeFilter("Equal", 
-            counterColQuery, 
-            new NameGetter(), 
-            new ExecTimeInSecondsGetter(), 
+        new ByAssertTypeFilter("Equal",
+            counterColQuery,
+            new NameGetter(),
+            new ExecTimeInSecondsGetter(),
             new ResultGetter()),
-        new ByAssertTypeFilter("MultiTrue", 
-            counterColQuery, 
-            new NameGetter(), 
-            new ExecTimeInSecondsGetter(), 
-            new ColumnQueryWithRows(
-                new EveryRowQuery<EnumerableTestResult>(
-                    new NameGetter(), 
-                    new ExecTimeInSecondsGetter(), 
-                    new ResultGetter()))));
+        new ByAssertTypeFilter("MultiTrue",
+            counterColQuery,
+            new NameGetter(),
+            new ExecTimeInSecondsGetter(),
+            new ColumnWithRowsBranchedQuery<TestResult>(tr => tr.InnerTests,
+                new EveryRowQuery(
+                    new NameGetter(),
+                    new ExecTimeInSecondsGetter(),
+                    new ResultGetter()))
+        ) };
 
 // 3. Report
 IColumn reportedColumn =
-    new Reporter<EnumerableTestResult>().Report(new EnumerableTestResult(result), reportQuery);
+    new Reporter<TestResult>().Report(result, reportQueries);
 
 // 3a. Preview column
 string columnStr = reportedColumn.ToXml().ToString();
@@ -94,7 +117,7 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 <Column>
   <Row>
     <Column>Date</Column>
-    <Column>17.03.2020</Column>
+    <Column>21.03.2020</Column>
   </Row>
   <Row>
     <Column>Tested by</Column>
@@ -102,16 +125,16 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
   </Row>
   <Row>
     <Column>Final result</Column>
-    <Column>False</Column>
+    <Column>Failed</Column>
   </Row>
   <Row>
-    <Column>1</Column>
+    <Column>0</Column>
     <Column>TestMethod0</Column>
     <Column>2</Column>
     <Column>True</Column>
   </Row>
   <Row>
-    <Column>3</Column>
+    <Column>1</Column>
     <Column>TestMethod1</Column>
     <Column>2</Column>
     <Column>
@@ -128,7 +151,7 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
     </Column>
   </Row>
   <Row>
-    <Column>5</Column>
+    <Column>2</Column>
     <Column>TestMethod3</Column>
     <Column>2</Column>
     <Column>True</Column>
@@ -140,11 +163,11 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 
 ```none
 +--------------------------------------------+
-¦ Date                  ¦ 15.03.2020         ¦
+¦ Date                  ¦ 21.03.2020         ¦
 ¦-----------------------+--------------------¦
 ¦ Tested by             ¦ Me                 ¦
 ¦-----------------------+--------------------¦
-¦ Final result          ¦ False              ¦
+¦ Final result          ¦ Failed             ¦
 ¦--------------------------------------------¦
 ¦ 0 ¦ TestMethod0 ¦ 2 ¦ True                 ¦
 ¦---+-------------+---+----------------------¦
