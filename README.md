@@ -115,8 +115,7 @@ Assert.Equal(formattedReport, readReport);
 IColumn parsedColumn = new SimpleTextParser().Parse(readReport);
 
 // 8. Interpret
-IEnumerable<IRow> rows = parsedColumn.Content.Extract(rows_ => rows_, obj => null);
-string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => null, obj => obj.ToString());
+string finalResult = reportedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
 // etc...
 ```
 
