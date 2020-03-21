@@ -168,7 +168,7 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 </Column>
 ```
 
-`formattedReport` (string):
+`formattedReport` (**string**):
 
 ```none
 +--------------------------------------------+
@@ -189,7 +189,7 @@ string date = rows.ToArray()[0].Columns.ToArray()[1].Content.Extract(rows_ => nu
 ```
 
 ### More practical example (TestStand)
-
+You can make `reports` from any type. For that, you just need to define `queries` which will extract information.
 #### 1. Decorate **PropertyObject**
 
 ```csharp
@@ -412,3 +412,7 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
 ¦     ¦                               ¦ 1.000        ¦       ¦
 +------------------------------------------------------------+
 ```
+### Future development
+- Implement **SimpleTextParser**.
+- Include call chain in `reporter` exceptions to make them more readable and thus facilitate composing the `report` `query`.
+- Consider introducing bidirectional `queries` to support `interpreting`.
