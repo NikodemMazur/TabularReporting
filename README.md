@@ -115,12 +115,10 @@ Assert.Equal(formattedReport, readReport);
 IColumn parsedColumn = new SimpleTextParser().Parse(readReport);
 
 // 8. Interpret
-string finalResult = reportedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
+string finalResult = parsedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
 // etc...
 ```
-
 `reportedColumn` (**IColumn**):
-
 ```xml
 <Column>
   <Row>
@@ -166,9 +164,7 @@ string finalResult = reportedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
   </Row>
 </Column>
 ```
-
 `formattedReport` (**string**):
-
 ```none
 +--------------------------------------------+
 ¦ Date                  ¦ 21.03.2020         ¦
@@ -186,7 +182,6 @@ string finalResult = reportedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
 ¦ 2 ¦ TestMethod3 ¦ 2 ¦ True                 ¦
 +--------------------------------------------+
 ```
-
 ### More practical example (TestStand)
 You can create `reports` from any type as long as you have some `queries` which tell the `reporter` how to process that type.
 #### 1. Decorate **PropertyObject**
@@ -300,7 +295,6 @@ internal class ByStepTypeFilter : ISourcedRowQuery<EnumerablePropertyObject>
 ```
 #### 3. Use queries to define report
 Use **TabularReporting.TestStand.FluentRowBuilder** for convenient in-TestStand use.
-
 ```csharp
 // ...
 
