@@ -1,5 +1,6 @@
 ### What is it?
 Extensible framework for creating tabular reports from any type.
+
 ![What is it?](/images/what_is_it.png)
 ### Terminology
 - `source` - A type **T** implementing **IEnumerable\<T\>** from which you want to create a `report`.
@@ -11,8 +12,8 @@ Extensible framework for creating tabular reports from any type.
 - `query` - The information about how to process a `source` to get `row`s or a `column`.
 - `interpreting` - The act of translating a report as **IColumn** to real-world data fields you extracted from `source` during `reporting`.
 - `branching` - Continuing the `reporter` projection in a recursive manner.
-### Decorator needed.
-The type **T** is expected to implement **IEnumerable\<T\>** which means that it may contain child elements of its type. In this way, the input source reflects the data hierarchy defined by columns and rows composition - a column can contain rows, which in turn contain columns.
+### Example
+
 #### Type
 Let's introduce an example type that roughly corresponds to the unit test results tree in some IDE.
 ```csharp
@@ -33,14 +34,10 @@ public class TestResult
     // ...
 }
 ```
-### Example
 #### Report --> Format --> Write
 ```csharp
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
 using TabularReporting.Abstractions;
+using TabularReporting;
 
 // ...
 
