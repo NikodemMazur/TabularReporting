@@ -96,9 +96,6 @@ IEnumerable<IRowQuery> reportQueries = new IRowQuery[] {
 IColumn reportedColumn =
     new Reporter<TestResult>().Report(result, reportQueries);
 
-// 3a. Preview column
-string columnStr = reportedColumn.ToXml().ToString();
-
 // 4. Format
 string formattedReport = new SimpleTextFormatter().Format(reportedColumn);
 
