@@ -92,10 +92,7 @@ namespace TabularReporting.TestStand
             lock (_countersDictPadLock)
             {
                 if (_countersDict.TryGetValue(counterName, out IColumnQuery value))
-                {
-                    (value as CounterColumnQuery).Reset();
-                    _colQueries.Add(value);
-                }
+                    _colQueries.Add((value as CounterColumnQuery).Reset());
                 else
                 {
                     var col = new CounterColumnQuery(countFromOne, format);
@@ -119,10 +116,7 @@ namespace TabularReporting.TestStand
             lock (_diffsDictPadLock)
             {
                 if (_diffsDict.TryGetValue(differName, out IColumnQuery value))
-                {
-                    (value as NumericDiff).Reset(initialValue);
-                    _colQueries.Add(value);
-                }
+                    _colQueries.Add((value as NumericDiff).Reset(initialValue));
                 else
                 {
                     var col = new NumericDiff(initialValue, lookupString, format);

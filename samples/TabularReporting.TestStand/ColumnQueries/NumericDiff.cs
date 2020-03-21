@@ -43,9 +43,10 @@ namespace TabularReporting.TestStand
             }
         }
 
-        public void Reset(double newInitialValue)
+        public NumericDiff Reset(double newInitialValue)
         {
             _register = newInitialValue;
+            return this;
         }
     }
 }
