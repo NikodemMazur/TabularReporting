@@ -20,11 +20,12 @@ namespace TabularReporting
         public ColumnWithRowsBranchedQuery(Func<T, IEnumerable<T>> branchSelector, params IRowQuery[] rowQueries) 
             : this(branchSelector, rowQueries.AsEnumerable()) { }
 
-        public Union2<IEnumerable<IRowQuery>, object> Content => 
+        Union2<IEnumerable<IRowQuery>, object> IColumnQuery.Content => 
             new Union2<IEnumerable<IRowQuery>, object>.Case1(_rowQueries);
 
-        public T Source { get; set; }
+        T ISourcedColumnQuery<T>.Source { get; set; }
 
-        public IEnumerable<T> Branch => _branchSelector.Invoke(Source);
+        IEnumerable<T> IBranchingSourcedColumnQuery<T>.Branch => 
+            _branchSelector.Invoke(((ISourcedColumnQuery<T>)this).Source);
     }
 }
