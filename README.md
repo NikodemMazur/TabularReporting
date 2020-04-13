@@ -3,29 +3,29 @@ Extensible framework for creating tabular reports from any type.
 
 ![What is it?](/images/what_is_it.png)
 ### Terminology
-- `source` - A type **T** implementing **IEnumerable\<T\>** from which you want to create a `report`.
-- `report` - Composition of `rows` and `columns`.
-- `row` - An element of a `report`, contained by `column`. It must contain at least one `column`. It is never an `endpoint` of a `report`.
-- `column` - An element of a `report` (report is a `column`, not a `row`). It can contain either `rows` or an `endpoint`.
-- `endpoint` - An instance of **object**. It carries a useful information you want to put in a `report`.
-- `reporter` - Creates a `report` as **IColumn** from `source` using `queries`.
-- `query` - The information about how to process a `source` to get `rows` or a `column`.
-- `interpreting` - The act of translating a report as **IColumn** to real-world data fields you extracted from `source`.
-- `branching` - Continuing the `reporter` projection in a recursive manner.
+- **source** - A type `T` implementing `IEnumerable\<T\>` from which you want to create a **report**.
+- **report** - Composition of **rows** and **columns**.
+- **row** - An element of a **report**, contained by **column**. It must contain at least one **column**. It is never an **endpoint** of a **report**.
+- **column** - An element of a **report** (report is a **column**, not a **row**). It can contain either **rows** or an **endpoint**.
+- **endpoint** - An instance of **object**. It carries a useful information you want to put in a **report**.
+- **reporter** - Creates a **report** as `IColumn` from **source** using **queries**.
+- **query** - The information about how to process a **source** to get **rows** or a **column**.
+- **interpreting** - The act of translating a report as `IColumn` to real-world data fields you extracted from **source**.
+- **branching** - Continuing the **reporter** projection in a recursive manner.
 ### Example
-The **TestResult** reporting procedure is as follows:
-1. Get instances from which you want to create a `report`.
-2. Tell what your `report` should look like using `queries`.
-3. Fire `reporter` as **IReporter** which does the projection.
-4. Format the obtained xml-like `report` as **IColumn** using your **IFormatter** or the ready one **SimpleTextFormatter** (shipped with this framework).
-   Then, the result is **System.string**, **System.IO.TextWriter** or any other class you have chosen to represent your in-memory `report`.
-5. Save your `report` to disk.
+The `TestResult` reporting procedure is as follows:
+1. Get instances from which you want to create a **report**.
+2. Tell what your **report** should look like using **queries**.
+3. Fire **reporter** as `IReporter` which does the projection.
+4. Format the obtained xml-like **report** as `IColumn` using your `IFormatter` or the ready one `SimpleTextFormatter` (shipped with this framework).
+   Then, the result is `System.string`, `System.IO.TextWriter` or any other class you have chosen to represent your in-memory **report**.
+5. Save your **report** to disk.
 
 Optionally:
 
-6. Read your `report` back.
-7. Parse your `report` back to **IColumn**.
-8. Interpret **IColumn** - translate its `rows` and `columns` to desired data types.
+6. Read your **report** back.
+7. Parse your **report** back to `IColumn`.
+8. Interpret `IColumn` - translate its **rows** and **columns** to desired data types.
 #### Type
 Let's introduce an example type that roughly corresponds to the unit test results tree in some IDE.
 ```csharp
@@ -115,7 +115,7 @@ IColumn parsedColumn = new SimpleTextParser().Parse(readReport);
 string finalResult = parsedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
 // etc...
 ```
-`reportedColumn` (**IColumn**):
+`reportedColumn` (`IColumn`):
 ```xml
 <Column>
   <Row>
@@ -161,7 +161,7 @@ string finalResult = parsedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
   </Row>
 </Column>
 ```
-`formattedReport` (**string**):
+`formattedReport` (`string`):
 ```none
 +--------------------------------------------+
 ¦ Date                  ¦ 21.03.2020         ¦
@@ -180,8 +180,8 @@ string finalResult = parsedColumn[ColumnLocation.Root.Nest(2, 1)].ToString();
 +--------------------------------------------+
 ```
 ### More practical example (TestStand)
-You can create `reports` from any type as long as you have some `queries` which tell the `reporter` how to process that type.
-#### 1. Decorate **PropertyObject**
+You can create **reports** from any type as long as you have some **queries** which tell the **reporter** how to process that type.
+#### 1. Decorate `PropertyObject`
 Adapt the elementary TestStand type to .NET world.
 ```csharp
 public class EnumerablePropertyObject : PropertyObject, IEnumerable<EnumerablePropertyObject>
@@ -217,7 +217,7 @@ public class EnumerablePropertyObject : PropertyObject, IEnumerable<EnumerablePr
 }
 ```
 #### 2. Define queries
-Tell how to process **PropertyObject**.
+Tell how to process `PropertyObject`.
 ```csharp
 internal class FormattedValueGetter : ISourcedColumnQuery<EnumerablePropertyObject>
 {
@@ -291,7 +291,7 @@ internal class ByStepTypeFilter : ISourcedRowQuery<EnumerablePropertyObject>
 }
 ```
 #### 3. Use queries to define report
-Use **TabularReporting.TestStand.FluentRowBuilder** for convenient in-TestStand use.
+Use `TabularReporting.TestStand.FluentRowBuilder` for convenient in-TestStand use.
 ```csharp
 // ...
 
@@ -330,7 +330,7 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
 
 // ...
 ```
-`reportColumn` (**IColumn**):
+`reportColumn` (`IColumn`):
 ```xml
 <Column>
   <Row>
@@ -385,7 +385,7 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
   </Row>
 </Column>
 ```
-`reportStr` (**string**):
+`reportStr` (`string`):
 ```none
 +------------------------------------------------------------+
 ¦ No. ¦ Name                          ¦ Result       ¦ Time  ¦
@@ -406,8 +406,8 @@ string reportStr = new SimpleTextFormatter().Format(reportColumn);
 +------------------------------------------------------------+
 ```
 ### Future development
-- Implement **SimpleTextParser**.
-- Include call chain in `reporter` exceptions to make them more readable and thus facilitate composing the `report` `query`.
-- Consider introducing bidirectional `queries` to support `interpreting`.
+- Implement `SimpleTextParser`.
+- Include call chain in **reporter** exceptions to make them more readable and thus facilitate composing the **report** **query**.
+- Consider introducing bidirectional **queries** to support **interpreting**.
 ### License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
