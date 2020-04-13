@@ -3,7 +3,7 @@ Extensible framework for creating tabular reports from any type.
 
 ![What is it?](/images/what_is_it.png)
 ### Terminology
-- **source** - A type `T` implementing `IEnumerable\<T\>` from which you want to create a **report**.
+- **source** - A type `T` implementing `IEnumerable<T>` from which you want to create a **report**.
 - **report** - Composition of **rows** and **columns**.
 - **row** - An element of a **report**, contained by **column**. It must contain at least one **column**. It is never an **endpoint** of a **report**.
 - **column** - An element of a **report** (report is a **column**, not a **row**). It can contain either **rows** or an **endpoint**.
